@@ -9,6 +9,8 @@ async def get_teachers_routine():
 
 app = Flask(__name__)
 
+
+
 @app.route("/teachers", methods=["GET"])
 async def teachers():
     result = await get_teachers_routine()
