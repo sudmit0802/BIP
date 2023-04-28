@@ -2,22 +2,14 @@ import ApiSpbStuRuz
 from flask import Flask, render_template
 from flask_login import LoginManager, login_required
 import secrets
-import auth
+import database
 
 app = Flask(__name__)
 login_manager = LoginManager()
 
 @login_manager.user_loader
 def load_user(user_id):
-    conn = psycopg2.connect(host=DB_HOST, dbname=DB_NAME, user=DB_USER, password=DB_PASS)
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM users WHERE id = %s", (user_id,))
-    row = cur.fetchone()
-    cur.close()
-    conn.close()
-    if not row:
-        return None
-    return User(row[0], row[1], row[2], row[3])
+    return database.select_auth(user_id)
 
 async def get_teachers_routine():
     res = "teachers"
@@ -54,19 +46,6 @@ def signin_confirm():
     return "TODO: база данных (Константин)\
             TODO:Бэкэнд входа в систему (Даниил)"
 
-@app.route("/signup", methods=["GET"])
-def signup():
-    file = open("routes/html/signup.html", "r", encoding="utf-8")
-    res = file.read()
-    file.close()
-    return res
-
-@app.route("/signup/confirm", methods=["GET"])
-def signup_confirm():
-    return "TODO: база данных (Константин)\
-            TODO:Бэкэнд регистрации (Дмитрий)"
-
-
 @app.route("/main", methods=["GET"])
 @login_required
 def main():
@@ -82,10 +61,19 @@ def hello():
     file.close()
     return res
 
+@app.route('/signup', methods=['GET', 'POST'])
+def register_new():
+    return database.reg_new_user()
 
+@app.route('/signup/success', methods=['GET', 'POST'])
+def register_success():
+    file = open("routes/html/signup_success.html", "r", encoding="utf-8")
+    res = file.read()
+    file.close()
+    return res
 
 if __name__ == "__main__":
-    print()
     app.secret_key = str(secrets.token_hex(32))
     login_manager.init_app(app)
+    database.create_database()
     app.run(debug=True)

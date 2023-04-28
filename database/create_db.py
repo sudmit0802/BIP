@@ -1,4 +1,4 @@
-from utils import*
+from .utils import*
 
 def create_database():
     conn = get_connection(postgres_ctx)
