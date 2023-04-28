@@ -1,5 +1,6 @@
+import asyncio
 import ApiSpbStuRuz
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 
 async def get_teachers_routine():
     res = "teachers"
@@ -26,17 +27,30 @@ async def faculties():
     return render_template('faculties_template.html', faculties=result)
 
 
-@app.route("/signin", methods=["GET"])
+@app.route("/signin", methods=["GET", "POST"])
 def signin():
-    file = open("routes/signin.html", "r", encoding="utf-8")
-    res = file.read()
-    file.close()
-    return res
+    if request.method == "POST":
+        # Get the submitted login and password
+        login = request.form.get("login")
+        password = request.form.get("password")
+
+        # Check if the login and password are valid (for example, by looking them up in a database)
+        if login == "example_user" and password == "example_password":
+            return redirect("/signin/confirm")
+        else:
+            return "Invalid login or password."
+    else:
+        # If the request was a GET, return the HTML form
+        file = open("routes/signin.html", "r", encoding="utf-8")
+        res = file.read()
+        file.close()
+        return res
 
 @app.route("/signin/confirm", methods=["GET"])
 def signin_confirm():
     return "TODO: база данных (Константин)\
-            TODO:Бэкэнд входа в систему (Даниил)"
+            TODO:Бэкэнд входа в систему (Даниил)\
+            вход упешный, -_-    "
 
 @app.route("/signup", methods=["GET"])
 def signup():
