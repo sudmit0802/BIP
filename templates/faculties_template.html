@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список институтов(кафедр)</title>
+</head>
+<body>
+    <h1>Список институтов(кафедр)</h1>
+    <table style="width: 535px;" border="2">
+        <tr>
+            <th style="width: 160.141px;">ID</th>
+            <th style="width: 212.859px;">Полное название</th>
+            <th style="width: 136px;">Аббревиатура</th>
+        </tr>
+        {% for faculty in faculties %}
+        <tr>
+            <td style="width: 160.141px; text-align: center;">{{faculty.id}}</td>
+            <td style="width: 212.859px; text-align: center;">{{faculty.name}}</td>
+            <td style="width: 136px; text-align: center;">{{faculty.abbr}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
