@@ -1,9 +1,10 @@
 import psycopg2
 import sqlparse
+import os
 
 postgres_ctx = {
     "host": "localhost",
-    "database": "postgres",
+    "database": "lab_manager_database",
     "user": "postgres",
     "password": "0802"
 }

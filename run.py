@@ -1,5 +1,23 @@
 import ApiSpbStuRuz
 from flask import Flask, render_template
+from flask_login import LoginManager, login_required
+import secrets
+import auth
+
+app = Flask(__name__)
+login_manager = LoginManager()
+
+@login_manager.user_loader
+def load_user(user_id):
+    conn = psycopg2.connect(host=DB_HOST, dbname=DB_NAME, user=DB_USER, password=DB_PASS)
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM users WHERE id = %s", (user_id,))
+    row = cur.fetchone()
+    cur.close()
+    conn.close()
+    if not row:
+        return None
+    return User(row[0], row[1], row[2], row[3])
 
 async def get_teachers_routine():
     res = "teachers"
@@ -12,8 +30,6 @@ async def get_faculties_routine():
     async with ApiSpbStuRuz.ApiSpbStuRuz() as api:  
         res = await api.get_faculties()
     return res
-
-app = Flask(__name__)
 
 @app.route("/teachers", methods=["GET"])
 async def teachers():
@@ -52,6 +68,7 @@ def signup_confirm():
 
 
 @app.route("/main", methods=["GET"])
+@login_required
 def main():
     file = open("routes/html/main.html", "r", encoding="utf-8")
     res = file.read()
@@ -65,5 +82,10 @@ def hello():
     file.close()
     return res
 
+
+
 if __name__ == "__main__":
+    print()
+    app.secret_key = str(secrets.token_hex(32))
+    login_manager.init_app(app)
     app.run(debug=True)
