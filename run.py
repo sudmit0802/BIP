@@ -28,7 +28,7 @@ async def faculties():
 
 @app.route("/signin", methods=["GET"])
 def signin():
-    file = open("routes/signin.html", "r", encoding="utf-8")
+    file = open("routes/html/signin.html", "r", encoding="utf-8")
     res = file.read()
     file.close()
     return res
@@ -40,7 +40,7 @@ def signin_confirm():
 
 @app.route("/signup", methods=["GET"])
 def signup():
-    file = open("routes/signup.html", "r", encoding="utf-8")
+    file = open("routes/html/signup.html", "r", encoding="utf-8")
     res = file.read()
     file.close()
     return res
@@ -53,14 +53,14 @@ def signup_confirm():
 
 @app.route("/main", methods=["GET"])
 def main():
-    file = open("routes/main.html", "r", encoding="utf-8")
+    file = open("routes/html/main.html", "r", encoding="utf-8")
     res = file.read()
     file.close()
     return res
 
 @app.route("/", methods=["GET"])
 def hello():
-    file = open("routes/hello.html", "r", encoding="utf-8")
+    file = open("routes/html/hello.html", "r", encoding="utf-8")
     res = file.read()
     file.close()
     return res
