@@ -45,8 +45,7 @@ def signin():
 
 @app.route("/signin/confirm", methods=["GET"])
 def signin_confirm():
-    return "TODO: база данных (Константин)\
-            TODO:Бэкэнд входа в систему (Даниил)"
+    return "TODO:Бэкэнд входа в систему (Даниил)"
 
 @app.route("/main", methods=["GET"])
 @login_required
