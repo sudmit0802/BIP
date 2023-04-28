@@ -13,6 +13,27 @@ async def get_faculties_routine():
         res = await api.get_faculties()
     return res
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 app = Flask(__name__)
 
 @app.route("/teachers", methods=["GET"])
