@@ -5,9 +5,6 @@ import secrets
 import os
 import database
 
-
-
-
 app = Flask(__name__)
 login_manager = LoginManager()
 
