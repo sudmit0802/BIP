@@ -25,9 +25,42 @@ async def faculties():
     result = await get_faculties_routine()
     return render_template('faculties_template.html', faculties=result)
 
+
+@app.route("/signin", methods=["GET"])
+def signin():
+    file = open("routes/signin.html", "r", encoding="utf-8")
+    res = file.read()
+    file.close()
+    return res
+
+@app.route("/signin/confirm", methods=["GET"])
+def signin_confirm():
+    return "TODO: база данных (Константин)\
+            TODO:Бэкэнд входа в систему (Даниил)"
+
+@app.route("/signup", methods=["GET"])
+def signup():
+    file = open("routes/signup.html", "r", encoding="utf-8")
+    res = file.read()
+    file.close()
+    return res
+
+@app.route("/signup/confirm", methods=["GET"])
+def signup_confirm():
+    return "TODO: база данных (Константин)\
+            TODO:Бэкэнд регистрации (Дмитрий)"
+
+
+@app.route("/main", methods=["GET"])
+def main():
+    file = open("routes/main.html", "r", encoding="utf-8")
+    res = file.read()
+    file.close()
+    return res
+
 @app.route("/", methods=["GET"])
-def main_page():
-    file = open("index.html", "r", encoding="utf-8")
+def hello():
+    file = open("routes/hello.html", "r", encoding="utf-8")
     res = file.read()
     file.close()
     return res
