@@ -2,6 +2,7 @@ import ApiSpbStuRuz
 from flask import Flask, render_template
 from flask_login import LoginManager, login_required
 import secrets
+import os
 import database
 
 app = Flask(__name__)
@@ -36,7 +37,8 @@ async def faculties():
 
 @app.route("/signin", methods=["GET"])
 def signin():
-    file = open("routes/html/signin.html", "r", encoding="utf-8")
+    cur_file_path = os.path.dirname(__file__)
+    file = open(cur_file_path+"/routes/html/signin.html", "r", encoding="utf-8")
     res = file.read()
     file.close()
     return res
@@ -49,14 +51,16 @@ def signin_confirm():
 @app.route("/main", methods=["GET"])
 @login_required
 def main():
-    file = open("routes/html/main.html", "r", encoding="utf-8")
+    cur_file_path = os.path.dirname(__file__)
+    file = open(cur_file_path+"/routes/html/main.html", "r", encoding="utf-8")
     res = file.read()
     file.close()
     return res
 
 @app.route("/", methods=["GET"])
 def hello():
-    file = open("routes/html/hello.html", "r", encoding="utf-8")
+    cur_file_path = os.path.dirname(__file__)
+    file = open(cur_file_path+"/routes/html/hello.html", "r", encoding="utf-8")
     res = file.read()
     file.close()
     return res
@@ -67,7 +71,8 @@ def register_new():
 
 @app.route('/signup/success', methods=['GET', 'POST'])
 def register_success():
-    file = open("routes/html/signup_success.html", "r", encoding="utf-8")
+    cur_file_path = os.path.dirname(__file__)
+    file = open(cur_file_path+"/routes/html/signup_success.html", "r", encoding="utf-8")
     res = file.read()
     file.close()
     return res
