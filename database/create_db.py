@@ -1,9 +1,10 @@
-from utils import*
+from .utils import*
 
 def create_database():
     conn = get_connection(postgres_ctx)
     cur = conn.cursor()
-    with open("../sql/a.sql", "r") as f:
+    cur_file_path = os.path.dirname(__file__)
+    with open(cur_file_path+"/sql/create_db.sql", "r") as f:
         sql = f.read()
 
     # разбираем SQL-запрос на отдельные запросы

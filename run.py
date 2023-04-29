@@ -1,5 +1,16 @@
 import ApiSpbStuRuz
 from flask import Flask, render_template
+from flask_login import LoginManager, login_required
+import secrets
+import os
+import database
+
+app = Flask(__name__)
+login_manager = LoginManager()
+
+@login_manager.user_loader
+def load_user(user_id):
+    return database.select_auth(user_id)
 
 async def get_teachers_routine():
     res = "teachers"
@@ -12,8 +23,6 @@ async def get_faculties_routine():
     async with ApiSpbStuRuz.ApiSpbStuRuz() as api:  
         res = await api.get_faculties()
     return res
-
-app = Flask(__name__)
 
 @app.route("/teachers", methods=["GET"])
 async def teachers():
@@ -28,42 +37,47 @@ async def faculties():
 
 @app.route("/signin", methods=["GET"])
 def signin():
-    file = open("routes/html/signin.html", "r", encoding="utf-8")
+    cur_file_path = os.path.dirname(__file__)
+    file = open(cur_file_path+"/routes/html/signin.html", "r", encoding="utf-8")
     res = file.read()
     file.close()
     return res
 
 @app.route("/signin/confirm", methods=["GET"])
 def signin_confirm():
-    return "TODO: база данных (Константин)\
-            TODO:Бэкэнд входа в систему (Даниил)"
-
-@app.route("/signup", methods=["GET"])
-def signup():
-    file = open("routes/html/signup.html", "r", encoding="utf-8")
-    res = file.read()
-    file.close()
-    return res
-
-@app.route("/signup/confirm", methods=["GET"])
-def signup_confirm():
-    return "TODO: база данных (Константин)\
-            TODO:Бэкэнд регистрации (Дмитрий)"
-
+    return "TODO:Бэкэнд входа в систему (Даниил)"
 
 @app.route("/main", methods=["GET"])
+@login_required
 def main():
-    file = open("routes/html/main.html", "r", encoding="utf-8")
+    cur_file_path = os.path.dirname(__file__)
+    file = open(cur_file_path+"/routes/html/main.html", "r", encoding="utf-8")
     res = file.read()
     file.close()
     return res
 
 @app.route("/", methods=["GET"])
 def hello():
-    file = open("routes/html/hello.html", "r", encoding="utf-8")
+    cur_file_path = os.path.dirname(__file__)
+    file = open(cur_file_path+"/routes/html/hello.html", "r", encoding="utf-8")
+    res = file.read()
+    file.close()
+    return res
+
+@app.route('/signup', methods=['GET', 'POST'])
+def register_new():
+    return database.reg_new_user()
+
+@app.route('/signup/success', methods=['GET', 'POST'])
+def register_success():
+    cur_file_path = os.path.dirname(__file__)
+    file = open(cur_file_path+"/routes/html/signup_success.html", "r", encoding="utf-8")
     res = file.read()
     file.close()
     return res
 
 if __name__ == "__main__":
+    app.secret_key = str(secrets.token_hex(32))
+    login_manager.init_app(app)
+    database.create_database()
     app.run(debug=True)

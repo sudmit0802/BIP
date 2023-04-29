@@ -1,12 +1,30 @@
 # BIP
-Team project web-development
-[Readme.pdf](https://github.com/sudmit0802/BIP/files/11142535/Readme.pdf)
 
+BIP is a team project for web development.
 
-requirements:
+## Requirements
 
-python >= 3.11
+Before running the BIP project, ensure that the following requirements are met:
 
-ApiSpbStuRuz >= 1.1.2
+* PostgreSQL server is running
+* python version 3.11 or higher is installed
+* ApiSpbStuRuz version 1.1.2 or higher is installed
+* flask version 2.3.1 or higher is installed
+* sqlparse version 0.4.4 or higher is installed
+* werkzeug version 2.3.1 or higher is installed
+* wtforms version 3.0.0 or higher is installed
 
-flask >= 2.3.1
+Additionally, make sure that you have a database named 'lab_manager_database' on your host machine. If it does not exist, use the following SQL command to create it:
+
+```sql
+CREATE DATABASE lab_manager_database;
+```
+
+## Contributors
+
+The following contributors have participated in the BIP project:
+
+* [sudmit0802](https://github.com/sudmit0802)
+* [ShizzzaL](https://github.com/ShizzzaL)
+* [Artem-Labs](https://github.com/Artem-Labs)
+* [steer09](https://github.com/steer09)
