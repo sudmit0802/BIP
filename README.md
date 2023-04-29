@@ -2,10 +2,6 @@
 
 BIP is a team project for web development.
 
-## Project Files
-
-The readme file for this project is available in PDF format. You can access it at [Readme.pdf](https://github.com/sudmit0802/BIP/files/11142535/Readme.pdf)
-
 ## Requirements
 
 Before running the BIP project, ensure that the following requirements are met:
