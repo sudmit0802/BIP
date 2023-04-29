@@ -1,18 +1,22 @@
 from .utils import*
-from werkzeug.security import generate_password_hash
-import auth
-from flask import render_template, redirect, url_for
+from auth import RegistrationForm
+from auth import render_template, generate_password_hash
+from flask import render_template
+from .login_user import try_select_by_username
 
 def reg_new_user():
-    form = auth.RegistrationForm()
+    form = RegistrationForm()
     if form.validate_on_submit():
         username = form.username.data
         password = generate_password_hash(form.password.data)
+        id = try_select_by_username(username)
+        if id:
+            return render_template('register.html', form=form, not_unique = "Пользователь с таким username уже существует!", success="")
         conn = get_connection(postgres_ctx)
         cur = conn.cursor()
         cur.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, password))
         conn.commit()
         cur.close()
         conn.close()
-        return redirect(url_for('signin'))
-    return render_template('register.html', form=form)
+        return render_template('register.html', form=form, not_unique="", success="Регистрация прошла успешно! Теперь вы можете войти.")
+    return render_template('register.html', form=form, not_unique="", success="")

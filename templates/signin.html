@@ -1,8 +1,7 @@
-
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Registration</title>
+    <title>Login</title>
     <style>
       body {
         display: flex;
@@ -45,7 +44,7 @@
     <form method="POST">
       <div>
         <h1 style="text-align: center; font-size: 3em;">TODO: красивый интерфейс входа в систему (Артём)</h1>
-        <h2 style="text-align: center; font-size: 32px;">Регистрация</h2>
+        <h2 style="text-align: center; font-size: 32px;">Вход</h2>
       </div>
       {{ form.csrf_token }}
       <p>
@@ -63,23 +62,16 @@
         {% endfor %}
       </p>
       <p>
-        {{ form.confirm_password.label }}<br>
-        {{ form.confirm_password() }}
-        {% for error in form.confirm_password.errors %}
-          <span style="color: red;">{{ error }}</span>
-        {% endfor %}
-      </p>
-      <p>
         {{ form.submit(class = "button") }}
       </p>
       <p>
-        <a href="http://localhost:5000/signin" class="button">Войти</a>
+        <a href="http://localhost:5000/signup" class="button">Зарегистрироваться</a>
       </p>
       <p style="color: red;">
-        {{ not_unique }}
+        {{ not_exist }}
       </p>
-      <p style="color: green;">
-        {{ success }}
+      <p style="color: red;">
+        {{ login_exception }}
       </p>
     </form>
   </body>

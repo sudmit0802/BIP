@@ -1,7 +1,6 @@
 from .utils import*
-from auth.auth_utils import redirect, login_user, url_for
+from auth import LoginForm, redirect, login_user, url_for, render_template
 from .select_auth import select_auth
-#from ...BIP import load_user
 
 
 def try_select_by_username(login):
@@ -16,23 +15,23 @@ def try_select_by_username(login):
     return row[0] 
 
 
-def login_user_proxy(login, password):
-    # Check if the login and password are valid (for example, by looking them up in a database)
-    id = try_select_by_username(login)
+def login_user_proxy():
+    form = LoginForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        id = try_select_by_username(username)
+        if id is None:
+            return render_template('signin.html', form=form, not_exist = "Неверный логин или пароль!", login_exception="")
     
-    if id is None:
-        return "Invalid login or password."
-    
-    user = select_auth(id)
-    print(login)
-    print(password)
-    
-    if user is not None and user.check_password(password):
-        login_user(user)
-        try:
-            login_user(user)
-        except Exception:
-            return "Unable to login"
-        return redirect(url_for('main'))
-    else:
-        return "user does not exist"
+        user = select_auth(id)
+        if user is not None and user.check_password(password):
+            try:
+                login_user(user)
+            except Exception:
+                return render_template('signin.html', form=form, not_exists="", login_exception = "Невозможно войти. Попробуйте позже.")
+            return redirect(url_for('main'))
+        else:
+            return render_template('signin.html', form=form, not_exist = "Неверный логин или пароль!", login_exception="")
+
+    return render_template('signin.html', form=form)
