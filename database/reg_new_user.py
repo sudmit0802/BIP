@@ -2,7 +2,6 @@ from .utils import*
 from werkzeug.security import generate_password_hash
 import auth
 from flask import render_template, flash, redirect, url_for
-import time
 
 def reg_new_user():
     form = auth.RegistrationForm()
