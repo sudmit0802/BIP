@@ -6,8 +6,8 @@ postgres_ctx = {
     "host": "localhost",
     "database": "lab_manager_database",
     "user": "postgres",
-    "port": "5433",
-    "password": "shizal"
+    "port": "5432",
+    "password": "0802"
 }
 
 def get_connection(ctx):

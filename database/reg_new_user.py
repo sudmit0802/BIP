@@ -1,7 +1,7 @@
 from .utils import*
 from werkzeug.security import generate_password_hash
 import auth
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, redirect, url_for
 
 def reg_new_user():
     form = auth.RegistrationForm()
@@ -14,6 +14,5 @@ def reg_new_user():
         conn.commit()
         cur.close()
         conn.close()
-        flash('Your account has been created! You are now able to log in', 'success')
-        return redirect(url_for('register_success'))
+        return redirect(url_for('signin'))
     return render_template('register.html', form=form)

@@ -2,16 +2,41 @@
 <html>
 <head>
     <title>Вход в систему</title>
+    <style>
+        .button {
+        display: block;
+        width: 200px;
+        height: 50px;
+        margin-bottom: 20px;
+        font-size: 16px;
+        text-align: center;
+        line-height: 50px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: all 0.2s ease-in-out;
+    }
+
+    form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    }
+    </style>
+
 </head>
 <body>
-    <h1 style="text-align: center; font-size: 3em;">TODO: интерфейс входа в систему (Артём)</h1>
-    <img src="static/artem.jpg" alt="Артём" style="display: block; margin: auto; width: 50%;">
+    <h1 style="text-align: center; font-size: 3em;">TODO: красивый интерфейс входа в систему (Артём)</h1>
+    <h2 style="text-align: center; font-size: 32px;">Вход в систему</h2>
     <form action="/signin" method="post" style="text-align: center; margin-top: 50px;">
-        <label for="login">Логин:</label>
+        <label for="login">Username</label>
         <input type="text" id="login" name="login"><br><br>
-        <label for="password">Пароль:</label>
+        <label for="password">Password</label>
         <input type="password" id="password" name="password"><br><br>
-        <input type="submit" value="Войти">
+        <input class="button" type="submit" value="Войти">
+        <a href="http://localhost:5000/signup" class="button">Зарегистрироваться</a>
     </form>
 </body>
 </html>

@@ -27,11 +27,13 @@ async def get_faculties_routine():
     return res
 
 @app.route("/teachers", methods=["GET"])
+@login_required
 async def teachers():
     result = await get_teachers_routine()
     return render_template('teachers_template.html', teachers=result)
 
 @app.route("/faculties", methods=["GET"])
+@login_required
 async def faculties():
     result = await get_faculties_routine()
     return render_template('faculties_template.html', faculties=result)
@@ -51,10 +53,6 @@ def signin():
         res = file.read()
         file.close()
         return res
-
-@app.route("/signin/confirm", methods=["GET"])
-def signin_confirm():
-    return "TODO:Бэкэнд входа в систему (Даниил)"
 
 @app.route("/main", methods=["GET"])
 @login_required
@@ -76,14 +74,6 @@ def hello():
 @app.route('/signup', methods=['GET', 'POST'])
 def register_new():
     return database.reg_new_user()
-
-@app.route('/signup/success', methods=['GET', 'POST'])
-def register_success():
-    cur_file_path = os.path.dirname(__file__)
-    file = open(cur_file_path+"/routes/html/signup_success.html", "r", encoding="utf-8")
-    res = file.read()
-    file.close()
-    return res
 
 if __name__ == "__main__":
     app.secret_key = str(secrets.token_hex(32))

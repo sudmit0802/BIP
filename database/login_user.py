@@ -24,6 +24,9 @@ def login_user_proxy(login, password):
         return "Invalid login or password."
     
     user = select_auth(id)
+    print(login)
+    print(password)
+    
     if user is not None and user.check_password(password):
         login_user(user)
         try:
