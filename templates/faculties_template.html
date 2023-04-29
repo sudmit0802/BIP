@@ -2,8 +2,24 @@
 <html>
 <head>
     <title>Список институтов(кафедр)</title>
+    <style>   
+    
+        .center_small {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 3vh;
+          }
+          
+        </style>
 </head>
 <body>
+    <div class="center_small">
+        <a>Вы авторизовались как пользователь: {{current_user.username}}</a>
+      </div>
+      <div class="center_small">
+      <a href='http://localhost:5000/logout'>Выйти</a>
+    </div>
     <h1>Список институтов(кафедр)</h1>
     <table style="width: 535px;" border="2">
         <tr>

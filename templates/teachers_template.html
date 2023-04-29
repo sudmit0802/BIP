@@ -2,8 +2,25 @@
 <html>
 <head>
     <title>Список преподавателей</title>
+    <style>   
+    
+    .center_small {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 3vh;
+      }
+      
+    </style>
+
 </head>
 <body>
+    <div class="center_small">
+        <a>Вы авторизовались как пользователь: {{current_user.username}}</a>
+    </div>
+    <div class="center_small">
+        <a href='http://localhost:5000/logout'>Выйти</a>
+    </div>
     <h1>Список преподавателей</h1>
     <table border="2">
         <tr>
