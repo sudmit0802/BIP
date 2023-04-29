@@ -5,7 +5,7 @@ def select_auth(user_id):
     
     conn = get_connection(postgres_ctx)
     cur = conn.cursor()
-    cur.execute("SELECT * FROM users WHERE id = %s", user_id)
+    cur.execute(f"SELECT * FROM users WHERE id = {user_id}")
     row = cur.fetchone()
     cur.close()
     conn.close()

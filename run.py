@@ -1,12 +1,14 @@
 import ApiSpbStuRuz
-from flask import Flask, render_template
-from flask_login import LoginManager, login_required
+from flask import Flask, render_template, request, redirect
+from flask_login import LoginManager, login_required, current_user
 import secrets
 import os
 import database
 
 app = Flask(__name__)
 login_manager = LoginManager()
+# определяем страницу входа
+login_manager.login_view = 'signin'
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -35,13 +37,20 @@ async def faculties():
     return render_template('faculties_template.html', faculties=result)
 
 
-@app.route("/signin", methods=["GET"])
+@app.route("/signin", methods=["GET", "POST"])
 def signin():
-    cur_file_path = os.path.dirname(__file__)
-    file = open(cur_file_path+"/routes/html/signin.html", "r", encoding="utf-8")
-    res = file.read()
-    file.close()
-    return res
+    if request.method == "POST":
+        # Get the submitted login and password
+        login = request.form.get("login")
+        password = request.form.get("password")
+
+        return database.login_user.login_user_proxy(login, password)
+    else:
+        cur_file_path = os.path.dirname(__file__)
+        file = open(cur_file_path+"/routes/html/signin.html", "r", encoding="utf-8")
+        res = file.read()
+        file.close()
+        return res
 
 @app.route("/signin/confirm", methods=["GET"])
 def signin_confirm():

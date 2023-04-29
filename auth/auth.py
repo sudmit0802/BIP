@@ -1,8 +1,4 @@
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, EqualTo
-from flask_login import UserMixin
-from werkzeug.security import check_password_hash
+from .auth_utils import *
 
 class User(UserMixin):
     def __init__(self, id, username, password):

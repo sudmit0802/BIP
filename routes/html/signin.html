@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Вход в систему</title>
+    <title>Вход в систему</title>
 </head>
 <body>
-	<h1 style="text-align: center; font-size: 3em;">TODO: интерфейс входа в систему (Артём)</h1>
-	<img src="static/artem.jpg" alt="Артём" style="display: block; margin: auto; width: 50%;">
-	<button onclick="window.location.href='http://localhost:5000/signin/confirm'" style="display: block; margin: auto; font-size: 2em;">Confirm</button>
+    <h1 style="text-align: center; font-size: 3em;">TODO: интерфейс входа в систему (Артём)</h1>
+    <img src="static/artem.jpg" alt="Артём" style="display: block; margin: auto; width: 50%;">
+    <form action="/signin" method="post" style="text-align: center; margin-top: 50px;">
+        <label for="login">Логин:</label>
+        <input type="text" id="login" name="login"><br><br>
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" name="password"><br><br>
+        <input type="submit" value="Войти">
+    </form>
 </body>
 </html>
