@@ -13,11 +13,11 @@ body {
     display: block;
     width: 200px;
     height: 50px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     font-size: 16px;
     text-align: center;
     line-height: 50px;
-    background-color: #07b056;
+    background-color: #249131;
     color: #fff;
     text-decoration: none;
     border-radius: 5px;
@@ -29,10 +29,15 @@ form {
     justify-content: center;
     flex-direction: column;
     align-items: center;
+    width: 90%;
+
+    margin: 0 auto;
 }
 
 h1 {
     margin: 0 0 24px 0;
+    border: 10px solid #17bd08;
+    border-radius: 5px;
 }
 
 .container {
@@ -46,6 +51,9 @@ h1 {
     margin: 0 auto;
     width: 50%;
     background: #17bd08;
+    border-radius: 50px;
+    box-shadow: 5px 5px 10px #aaa;
+
 }
 
 p {
@@ -54,36 +62,11 @@ p {
     margin: 0 auto;
 }
 
-.form {
-    width: 90%;
-
-    margin: 0 auto;
-}
-.login_username {
+.login_username, .login_password{
     width: 100%;
     margin: 0 auto;
+    border: none;
     margin-bottom: 10px;
     border-radius: 5px;
     height: 30px;
 }
-.login_password {
-    width: 100%;
-    margin: 0 auto;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    height: 30px;
-}
-.button-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 20px;
-    border-radius: 0;
-    overflow: hidden;
-    margin: 0 auto;
-}
-
-
-
-/* label[for="username"] {
-    color: red;
-} */

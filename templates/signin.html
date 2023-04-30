@@ -8,7 +8,7 @@
 
 <body>
   <div class="container">
-    <form class="form" method="POST">
+    <form method="POST">
       {{ form.csrf_token }}
       <h1>Войти в аккаунт</h1>
       <p>
@@ -23,11 +23,12 @@
         <span style="color: red;">{{ error }}</span>
         {% endfor %}
       </p>
-      <div class="text_reg">
-        <p>Нет аккаунта? <a href="http://localhost:5000/signup">Зарегистрируйся</a>!</p>
-      </div>
+      
       <div class="button">
         <p>{{ form.submit(class = "button") }}</p>
+      </div>
+      <div class="text_reg">
+        <p>Нет аккаунта? <a href="http://localhost:5000/signup">Зарегистрируйся</a>!</p>
       </div>
       <p style="color: red;">
         {{ not_exist }}
@@ -38,18 +39,4 @@
     </form>
   </div>
 </body>
-
 </html>
-
-<!-- <form class="login-form" action="javascript:void(0);">
-  <h1>Login</h1>
-  <div class="form-input-material">
-    <input type="text" name="username" id="username" placeholder=" " autocomplete="off" class="form-control-material" required />
-    <label for="username">Username</label>
-  </div>
-  <div class="form-input-material">
-    <input type="password" name="password" id="password" placeholder=" " autocomplete="off" class="form-control-material" required />
-    <label for="password">Password</label>
-  </div>
-  <button type="submit" class="btn btn-primary btn-ghost">Login</button>
-</form> -->
