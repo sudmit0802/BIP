@@ -1,6 +1,6 @@
 import secrets
 from flask import Flask, render_template, redirect, url_for
-from auth import LoginManager, login_required, current_user, logout_user
+from auth import LoginManager, login_required, logout_user
 from database import create_database, reg_new_user, select_auth, login_user_proxy
 from api_interface import get_buildings_routine, get_faculties_routine, get_teachers_routine
 
