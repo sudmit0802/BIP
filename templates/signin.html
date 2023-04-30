@@ -1,72 +1,34 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Login</title>
-    <style>
-      body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        padding: 0;
-      }
 
-      .button {
-        display: block;
-        width: 200px;
-        height: 50px;
-        margin-bottom: 20px;
-        font-size: 16px;
-        text-align: center;
-        line-height: 50px;
-        background-color: #007bff;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 5px;
-        transition: all 0.2s ease-in-out;
-      }
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='signin.css')}}" />
+</head>
 
-      form {
-      display: flex;
-      justify-content: center;
-      flex-direction: column;
-      align-items: center;
-      }
-
-      p
-      {
-        text-align: center;
-      }
-    </style>
-  </head>
-  <body>
-    <form method="POST">
-      <div>
-        <h1 style="text-align: center; font-size: 3em;">TODO: красивый интерфейс входа в систему (Артём)</h1>
-        <h2 style="text-align: center; font-size: 32px;">Вход</h2>
-      </div>
+<body>
+  <div class="container">
+    <form class="form" method="POST">
       {{ form.csrf_token }}
+      <h1>Войти в аккаунт</h1>
       <p>
-        {{ form.username.label }}<br>
-        {{ form.username() }}
+        {{ form.username(class = "login_username") }}
         {% for error in form.username.errors %}
-          <span style="color: red;">{{ error }}</span>
+        <span style="color: red;">{{ error }}</span>
         {% endfor %}
       </p>
       <p>
-        {{ form.password.label }}<br>
-        {{ form.password() }}
+        {{ form.password(class = "login_password") }}
         {% for error in form.password.errors %}
-          <span style="color: red;">{{ error }}</span>
+        <span style="color: red;">{{ error }}</span>
         {% endfor %}
       </p>
-      <p>
-        {{ form.submit(class = "button") }}
-      </p>
-      <p>
-        <a href="http://localhost:5000/signup" class="button">Зарегистрироваться</a>
-      </p>
+      <div class="text_reg">
+        <p>Нет аккаунта? <a href="http://localhost:5000/signup">Зарегистрируйся</a>!</p>
+      </div>
+      <div class="button">
+        <p>{{ form.submit(class = "button") }}</p>
+      </div>
       <p style="color: red;">
         {{ not_exist }}
       </p>
@@ -74,5 +36,20 @@
         {{ login_exception }}
       </p>
     </form>
-  </body>
+  </div>
+</body>
+
 </html>
+
+<!-- <form class="login-form" action="javascript:void(0);">
+  <h1>Login</h1>
+  <div class="form-input-material">
+    <input type="text" name="username" id="username" placeholder=" " autocomplete="off" class="form-control-material" required />
+    <label for="username">Username</label>
+  </div>
+  <div class="form-input-material">
+    <input type="password" name="password" id="password" placeholder=" " autocomplete="off" class="form-control-material" required />
+    <label for="password">Password</label>
+  </div>
+  <button type="submit" class="btn btn-primary btn-ghost">Login</button>
+</form> -->
