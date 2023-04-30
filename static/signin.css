@@ -64,13 +64,14 @@ p {
     margin: 0 auto;
     margin-bottom: 10px;
     border-radius: 5px;
+    height: 30px;
 }
 .login_password {
     width: 100%;
     margin: 0 auto;
     margin-bottom: 10px;
     border-radius: 5px;
-
+    height: 30px;
 }
 .button-row {
     display: flex;

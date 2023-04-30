@@ -12,15 +12,11 @@ login_manager.login_view = 'signin'
 def load_user(user_id):
     return select_auth(user_id)
 
-@app.route("/", methods=["GET"])
-def hello():
-    return render_template('hello.html')
-
 @app.route('/signup', methods=['GET', 'POST'])
 def register_new():
     return reg_new_user()
 
-@app.route("/signin", methods=["GET", "POST"])
+@app.route("/", methods=["GET", "POST"])
 def signin():
     return login_user_proxy()
 
@@ -51,7 +47,7 @@ async def buildings():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('hello'))
+    return redirect(url_for('signin'))
 
 if __name__ == "__main__":
     app.secret_key = str(secrets.token_hex(32))
