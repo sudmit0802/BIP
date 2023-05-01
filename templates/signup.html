@@ -1,44 +1,39 @@
-
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Registration</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='signup.css')}}" />
-  </head>
-  <body>
+
+<head>
+  <title>Registration</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='signup.css')}}" />
+</head>
+
+<body>
+  <div class="container">
     <form method="POST">
       <div>
-        <h1 style="text-align: center; font-size: 3em;">TODO: красивый интерфейс входа в систему (Артём)</h1>
-        <h2 style="text-align: center; font-size: 32px;">Регистрация</h2>
+        <h2>Регистрация</h2>
       </div>
       {{ form.csrf_token }}
       <p>
-        {{ form.username.label }}<br>
-        {{ form.username() }}
+        {{ form.username(class = "login_username") }}
         {% for error in form.username.errors %}
-          <span style="color: red;">{{ error }}</span>
+        <span style="color: red;">{{ error }}</span>
         {% endfor %}
       </p>
       <p>
-        {{ form.password.label }}<br>
-        {{ form.password() }}
+        {{ form.password(class = "login_password") }}
         {% for error in form.password.errors %}
-          <span style="color: red;">{{ error }}</span>
+        <span style="color: red;">{{ error }}</span>
         {% endfor %}
       </p>
       <p>
-        {{ form.confirm_password.label }}<br>
-        {{ form.confirm_password() }}
+        {{ form.confirm_password(class = "confirm_password") }}
         {% for error in form.confirm_password.errors %}
-          <span style="color: red;">{{ error }}</span>
+        <span style="color: red;">{{ error }}</span>
         {% endfor %}
       </p>
-      <p>
+      <div>
         {{ form.submit(class = "button") }}
-      </p>
-      <p>
-        <a href="{{ url_for('signin') }}" class="button">Войти</a>
-      </p>
+      </div>
       <p style="color: red;">
         {{ not_unique }}
       </p>
@@ -46,5 +41,7 @@
         {{ success }}
       </p>
     </form>
-  </body>
+  </div>
+</body>
+
 </html>
