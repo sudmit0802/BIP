@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Buildings</title>
+    <style>   
+        .center_small {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 3vh;
+          }
+        </style>
+</head>
+<body>
+    <div class="center_small">
+        <a>Вы авторизовались как пользователь: {{current_user.username}}</a>
+      </div>
+      <div class="center_small">
+      <a href="{{ url_for('logout') }}">Выйти</a>
+      </div>
+    <h1>Учебные корпуса</h1>
+    <table style="width: 535px;" border="2">
+        <tr>
+            <th style="width: 160px;">ID</th>
+            <th style="width: 250px;">Название</th>
+            <th style="width: 125px;">Аббревиатура</th>
+            <th style="width: 1000px;">Адрес</th>
+        </tr>
+        {% for building in buildings %}
+        <tr>
+            <td style="width: 160.141px; text-align: center;">{{building.id}}</td>
+            <td style="width: 212.859px; text-align: center;">{{building.name}}</td>
+            <td style="width: 136px; text-align: center;">{{building.abbr}}</td>
+            <td style="width: 300px; text-align: center;">{{building.address}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

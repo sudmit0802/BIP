@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='signin.css')}}" />
+</head>
+
+<body>
+  <div class="container">
+    <form method="POST">
+      {{ form.csrf_token }}
+      <h1>Войти в аккаунт</h1>
+      <p>
+        {{ form.username(class = "login_username") }}
+        {% for error in form.username.errors %}
+        <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+      </p>
+      <p>
+        {{ form.password(class = "login_password") }}
+        {% for error in form.password.errors %}
+        <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+      </p>
+      
+      <div class="button">
+        <p>{{ form.submit(class = "button") }}</p>
+      </div>
+      <div class="text_reg">
+        <p>Нет аккаунта? <a href="{{ url_for('signup') }}">Зарегистрируйся</a>!</p>
+      </div>
+      <p style="color: red;">
+        {{ not_exist }}
+      </p>
+      <p style="color: red;">
+        {{ login_exception }}
+      </p>
+    </form>
+  </div>
+</body>
+</html>
