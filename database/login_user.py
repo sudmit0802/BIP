@@ -14,7 +14,17 @@ def try_select_by_username(login):
         return None
     return row[0] 
 
-
+def try_select_by_email(email):
+    conn = get_connection(postgres_ctx)
+    cur = conn.cursor()
+    cur.execute(f"SELECT id FROM users WHERE email = '{email}';")
+    row = cur.fetchone()
+    cur.close()
+    conn.close()
+    if not row:
+        return None
+    return row[0]
+ 
 def login_user_proxy():
     form = LoginForm()
     if form.validate_on_submit():

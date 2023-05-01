@@ -56,4 +56,4 @@ if __name__ == "__main__":
     app.secret_key = str(secrets.token_hex(32))
     login_manager.init_app(app)
     create_database()
-    app.run(host='10.128.0.11', port=5000, debug=True)
+    app.run(debug=True)

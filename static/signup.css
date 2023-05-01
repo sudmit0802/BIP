@@ -49,7 +49,7 @@ form {
 }
 
 
-.login_username, .login_password{
+.login_email, .login_username, .login_password{
     width: 100%;
     margin: 0 auto;
     border: none;
