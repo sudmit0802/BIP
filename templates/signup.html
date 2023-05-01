@@ -34,12 +34,15 @@
       <div>
         {{ form.submit(class = "button") }}
       </div>
-      <p style="color: red;">
+      <div class="text_reg">
+        <p>Уже есть аккаунт? <a href="{{ url_for('signin') }}">Войти</a></p>
+      </div>
+      <div class="not_unique">
         {{ not_unique }}
-      </p>
-      <p style="color: green;">
+      </div>
+      <div class="success">
         {{ success }}
-      </p>
+      </div>
     </form>
   </div>
 </body>

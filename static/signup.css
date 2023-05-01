@@ -80,3 +80,13 @@ h2 {
     border: 10px solid #17bd08;
     border-radius: 5px;
 }
+
+.not_unique{
+    color: #f60303;
+}
+
+.success{
+    color: #fff;
+}
+
+
