@@ -1,6 +1,5 @@
 from .utils import*
-from auth import RegistrationForm
-from auth import render_template, generate_password_hash
+from auth import RegistrationForm, render_template, generate_password_hash
 from flask import render_template
 from .login_user import try_select_by_username
 
