@@ -2,34 +2,79 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-  }
+    min-height: 100vh;
+    background-image: url("/static/images/poly.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 
-  .button {
+.button {
     display: block;
     width: 200px;
     height: 50px;
-    margin-bottom: 20px;
+    margin: 0 auto;
+    margin-bottom: 10px;
     font-size: 16px;
     text-align: center;
     line-height: 50px;
-    background-color: #007bff;
+    background-color: #249131;
     color: #fff;
     text-decoration: none;
     border-radius: 5px;
     transition: all 0.2s ease-in-out;
-  }
+}
 
-  form {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  }
+form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+}
 
-  p
-  {
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: none;
+    padding: 20px;
+    height: 30%;
+    box-sizing: border-box;
+    margin: 0 auto;
+    width: 50%;
+    background: #17bd08;
+    border-radius: 50px;
+    box-shadow: 5px 5px 10px #aaa;
+}
+
+
+.login_email, .login_username, .login_password{
+    width: 100%;
+    margin: 0 auto;
+    border: none;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    height: 30px;
+}
+
+.confirm_password{
+    width: 100%;
+    margin: 0 auto;
+    border: none;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    height: 30px;
+}
+
+h2 {
+    margin: 0 0 24px 0;
+    border: 10px solid #17bd08;
+    border-radius: 5px;
+}
+
+p {
+    width: 100%;
     text-align: center;
-  }
+    margin: 0 auto;
+}
