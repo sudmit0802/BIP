@@ -10,7 +10,7 @@
   <div class="container">
     <form method="POST">
       {{ form.csrf_token }}
-      <h1>Войти в аккаунт</h1>
+      <h2>Вход</h2>
       <p>
         {{ form.username(class = "login_username") }}
         {% for error in form.username.errors %}
@@ -23,7 +23,6 @@
         <span style="color: red;">{{ error }}</span>
         {% endfor %}
       </p>
-      
       <div class="button">
         <p>{{ form.submit(class = "button") }}</p>
       </div>
