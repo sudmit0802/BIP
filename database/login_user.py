@@ -22,16 +22,16 @@ def login_user_proxy():
         password = form.password.data
         id = try_select_by_username(username)
         if id is None:
-            return render_template('signin.html', form=form, not_exist = "Неверный логин или пароль!", login_exception="")
+            return render_template('signin.html', form=form, message = "Неверный логин или пароль!")
     
         user = select_auth(id)
         if user is not None and user.check_password(password):
             try:
                 login_user(user)
             except Exception:
-                return render_template('signin.html', form=form, not_exists="", login_exception = "Невозможно войти. Попробуйте позже.")
+                return render_template('signin.html', form=form, message = "Невозможно войти. Попробуйте позже.")
             return redirect(url_for('main'))
         else:
-            return render_template('signin.html', form=form, not_exist = "Неверный логин или пароль!", login_exception="")
+            return render_template('signin.html', form=form, message = "Неверный логин или пароль!")
 
-    return render_template('signin.html', form=form)
+    return render_template('signin.html', form=form, message = "")
