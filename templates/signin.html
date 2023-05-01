@@ -28,7 +28,7 @@
         <p>{{ form.submit(class = "button") }}</p>
       </div>
       <div class="text_reg">
-        <p>Нет аккаунта? <a href="http://localhost:5000/signup">Зарегистрируйся</a>!</p>
+        <p>Нет аккаунта? <a href="{{ url_for('signup') }}">Зарегистрируйся</a>!</p>
       </div>
       <p style="color: red;">
         {{ not_exist }}
