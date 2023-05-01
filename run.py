@@ -13,7 +13,7 @@ def load_user(user_id):
     return select_auth(user_id)
 
 @app.route('/signup', methods=['GET', 'POST'])
-def register_new():
+def signup():
     return reg_new_user()
 
 @app.route("/", methods=["GET", "POST"])
@@ -23,7 +23,10 @@ def signin():
 @app.route("/main", methods=["GET"])
 @login_required
 def main():
-    return render_template('main.html')
+    return render_template('main.html',
+                            teachers_url = url_for('teachers'),
+                                faculties_url=url_for('faculties'),
+                                    buildings_url=url_for('buildings'))
 
 @app.route("/teachers", methods=["GET"])
 @login_required

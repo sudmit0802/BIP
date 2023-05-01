@@ -16,6 +16,6 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Зарегистрироваться')
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()], render_kw={"placeholder": "Введите ваше имя"})
+    username = StringField('Username', validators=[DataRequired()], render_kw={"placeholder": "Введите имя пользователя (логин)"})
     password = PasswordField('Password', validators=[DataRequired()], render_kw={"placeholder": "Введите пароль"})
     submit = SubmitField('Войти')

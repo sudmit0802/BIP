@@ -16,7 +16,7 @@
         <a>Вы авторизовались как пользователь: {{current_user.username}}</a>
       </div>
       <div class="center_small">
-      <a href='http://localhost:5000/logout'>Выйти</a>
+      <a href="{{ url_for('logout') }}">Выйти</a>
       </div>
     <h1>Учебные корпуса</h1>
     <table style="width: 535px;" border="2">
