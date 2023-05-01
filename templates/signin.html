@@ -26,16 +26,10 @@
       <div class="button">
         <p>{{ form.submit(class = "button") }}</p>
       </div>
-      <div class="text_reg">
-        <p>Нет аккаунта? <a href="{{ url_for('signup') }}">Зарегистрируйся</a>!</p>
+      <div>
+        <p> <p1 style="color: rgb(218, 66, 66);"> {{ message }} <br> </p1> Нет аккаунта? <a href="{{ url_for('signup') }}">Зарегистрируйся</a>!</p>
       </div>
-      <p style="color: red;">
-        {{ not_exist }}
-      </p>
-      <p style="color: red;">
-        {{ login_exception }}
-      </p>
-    </form>
+      </form>
   </div>
 </body>
 </html>

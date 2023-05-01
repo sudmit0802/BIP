@@ -3,7 +3,6 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    /* background: #eceffc; */
     background-image: url("/static/images/poly.jpg");
     background-repeat: no-repeat;
     background-size: cover;
@@ -31,7 +30,6 @@ form {
     flex-direction: column;
     align-items: center;
     width: 90%;
-
     margin: 0 auto;
 }
 
@@ -48,12 +46,6 @@ form {
     background: #17bd08;
     border-radius: 50px;
     box-shadow: 5px 5px 10px #aaa;
-}
-
-p {
-    width: 100%;
-    text-align: center;
-    margin: 0 auto;
 }
 
 
@@ -81,12 +73,8 @@ h2 {
     border-radius: 5px;
 }
 
-.not_unique{
-    color: #f60303;
+p {
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
 }
-
-.success{
-    color: #fff;
-}
-
-
