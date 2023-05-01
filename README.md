@@ -6,10 +6,11 @@ BIP is a team project for web development.
 
 Before running the BIP project, ensure that the following requirements are met:
 
-* PostgreSQL server is running
-* python version 3.11 or higher is installed
-* ApiSpbStuRuz version 1.1.2 or higher is installed
-* flask version 2.3.1 or higher is installed
+* PostgreSQL server is running on your localhost
+* python version 3.9 or higher is installed
+* flask[async] version 2.3.1 or higher is installed
+* flask_login version 0.6.2 or higher is installed
+* flask_wtf version 1.1.1 or higher is installed
 * sqlparse version 0.4.4 or higher is installed
 * werkzeug version 2.3.1 or higher is installed
 * wtforms version 3.0.0 or higher is installed
