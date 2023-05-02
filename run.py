@@ -1,6 +1,5 @@
 import secrets
-from flask import Flask, render_template, redirect, url_for
-from auth import LoginManager, login_required, logout_user
+from auth import LoginManager, login_required, logout_user, Flask, render_template, redirect, url_for, request, verify_user
 from database import create_database, reg_new_user, select_auth, login_user_proxy
 from api_interface import get_buildings_routine, get_faculties_routine, get_teachers_routine
 
@@ -19,6 +18,24 @@ def signup():
 @app.route("/", methods=["GET", "POST"])
 def signin():
     return login_user_proxy()
+
+
+@app.route("/verify", methods=["GET", "POST"])
+def verify():
+    username = request.args.get('username')
+    #allowed_referrer = url_for('signin')
+    #referrer = request.referrer
+    #if referrer != allowed_referrer or username == None:
+    #    return redirect(url_for('signin'))
+    #TODO:"запретить произвольный вход"
+    print("пизда ебаная")
+    print(username)
+    if not username:
+        return redirect(url_for('signin'))
+    print("пизда")
+    print(username)
+    return verify_user(username)
+
 
 @app.route("/main", methods=["GET"])
 @login_required

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='verify.css')}}" />
+</head>
+
+<body>
+  <div class="container">
+    <form method="POST">
+      {{ form.csrf_token }}
+      <h2>Вход</h2>
+      <p>
+        {{ form.verification_code(class = "verify_code") }}
+        {% for error in form.verification_code.errors %}
+        <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+      </p>
+      <div class="button">
+        <p>{{ form.submit(class = "button") }}</p>
+      </div>
+      </form>
+  </div>
+</body>
+</html>

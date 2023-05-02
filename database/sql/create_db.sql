@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS users(
     id SERIAL PRIMARY KEY,
     email VARCHAR(50) UNIQUE NOT NULL,
     username VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(120) NOT NULL
+    password VARCHAR(120) NOT NULL,
+    tfv_code VARCHAR(6)
 );
 INSERT INTO users (email, username, password) VALUES ('sudmit082@mail.ru', 'dima', 'pbkdf2:sha256:600000$WLlo4uTqXK2rxWnE$c227356f0291be82bbda5a8fcd47589edff320a506ab31850431e268d9dca95a');
 INSERT INTO users (email, username, password) VALUES ('denis.ne.povs@gmail.com', 'danil', 'pbkdf2:sha256:600000$IhKogcPPcs1BIBsE$1d8bd9e9c439046070deac602184c923c0a13ff4216c349c6ba4755e7bf1a409');

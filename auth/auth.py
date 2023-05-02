@@ -1,11 +1,12 @@
 from .auth_utils import *
 
 class User(UserMixin):
-    def __init__(self, id, username, password):
+    def __init__(self, id, email, username, password, tfv_code):
         self.id = id
         self.username = username
         self.password = password
-
+        self.email = email
+        self.tfv_code = tfv_code
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
@@ -20,3 +21,14 @@ class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()], render_kw={"placeholder": "Введите имя пользователя (логин)"})
     password = PasswordField('Password', validators=[DataRequired()], render_kw={"placeholder": "Введите пароль"})
     submit = SubmitField('Войти')
+
+class VerifyForm(FlaskForm):
+    verification_code = StringField('Code', validators=[DataRequired(), Length(min=6, max=6) ], render_kw={"placeholder": "Введите код подтверждения"})
+    submit = SubmitField('Подтвердить')
+
+
+def generate_tf_code():
+    code = ''
+    for i in range(6):
+        code += str(random.randrange(10))
+    return code
