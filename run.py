@@ -1,6 +1,6 @@
 import secrets
 from auth import LoginManager, login_required, logout_user, Flask, render_template, redirect, url_for, request, verify_user
-from database import create_database, reg_new_user, select_auth, login_user_proxy
+from database import create_database, reg_new_user, get_user_from_db, login_user_proxy
 from api_interface import get_buildings_routine, get_faculties_routine, get_teachers_routine
 
 app = Flask(__name__)
@@ -9,7 +9,7 @@ login_manager.login_view = 'signin'
 
 @login_manager.user_loader
 def load_user(user_id):
-    return select_auth(user_id)
+    return get_user_from_db(user_id)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():

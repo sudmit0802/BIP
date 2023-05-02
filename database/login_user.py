@@ -1,6 +1,6 @@
 from .utils import*
 from auth import LoginForm, redirect, login_user, url_for, render_template, generate_tf_code
-from .select_auth import select_auth
+from .select_auth import get_user_from_db
 from auth.smtp_routine import send_email
 
 def try_select_by_username(login):
@@ -49,7 +49,7 @@ def login_user_proxy():
 
         id = id_us or id_em
 
-        user = select_auth(id)
+        user = get_user_from_db(id)
 
         if user is not None and user.check_password(password):
             try:
