@@ -23,17 +23,9 @@ def signin():
 @app.route("/verify", methods=["GET", "POST"])
 def verify():
     username = request.args.get('username')
-    #allowed_referrer = url_for('signin')
-    #referrer = request.referrer
-    #if referrer != allowed_referrer or username == None:
-    #    return redirect(url_for('signin'))
     #TODO:"запретить произвольный вход"
-    print("пизда ебаная")
-    print(username)
     if not username:
         return redirect(url_for('signin'))
-    print("пизда")
-    print(username)
     return verify_user(username)
 
 
