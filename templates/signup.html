@@ -14,6 +14,12 @@
       </div>
       {{ form.csrf_token }}
       <p>
+        {{ form.email(class = "login_email") }}
+        {% for error in form.email.errors %}
+        <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+      </p>
+      <p>
         {{ form.username(class = "login_username") }}
         {% for error in form.username.errors %}
         <span style="color: red;">{{ error }}</span>

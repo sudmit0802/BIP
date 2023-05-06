@@ -33,6 +33,8 @@ form {
     margin: 0 auto;
 }
 
+
+
 .container {
     display: flex;
     flex-direction: column;
@@ -49,16 +51,10 @@ form {
 }
 
 
-.login_email, .login_username, .login_password{
-    width: 100%;
-    margin: 0 auto;
-    border: none;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    height: 30px;
-}
 
-.confirm_password{
+
+
+.verify_code{
     width: 100%;
     margin: 0 auto;
     border: none;

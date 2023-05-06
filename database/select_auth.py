@@ -1,7 +1,7 @@
 from .utils import*
-import auth
+from auth import User
 
-def select_auth(user_id):
+def get_user_from_db(user_id):
     
     conn = get_connection(postgres_ctx)
     cur = conn.cursor()
@@ -11,5 +11,27 @@ def select_auth(user_id):
     conn.close()
     if not row:
         return None
-    return auth.User(row[0], row[1], row[2])
+    return User(row[0], row[1], row[2], row[3], row[4])
             
+
+def get_tfv_code_by_username(username):
+    conn = get_connection(postgres_ctx)
+    cur = conn.cursor()
+    cur.execute(f"SELECT tfv_code FROM users WHERE username = '{username}';")
+    row = cur.fetchone()
+    cur.close()
+    conn.close()
+    if not row:
+        return None
+    return row[0] 
+
+def get_tfv_code_by_email(username):
+    conn = get_connection(postgres_ctx)
+    cur = conn.cursor()
+    cur.execute(f"SELECT tfv_code FROM users WHERE email = '{username}';")
+    row = cur.fetchone()
+    cur.close()
+    conn.close()
+    if not row:
+        return None
+    return row[0] 
