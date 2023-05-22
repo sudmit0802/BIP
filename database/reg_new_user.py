@@ -1,7 +1,8 @@
-from .utils import*
+from .utils import *
 from auth import RegistrationForm, render_template, generate_password_hash
 from flask import render_template
 from .login_user import try_select_by_username, try_select_by_email
+
 
 def reg_new_user():
     form = RegistrationForm()
@@ -13,13 +14,14 @@ def reg_new_user():
         id_email = try_select_by_email(email)
 
         if id_usrname or id_email:
-            return render_template('signup.html', form=form, message = "Пользователь с таким именем уже существует!")
+            return render_template('signup.html', form=form, message="Пользователь с таким именем уже существует!")
 
         conn = get_connection(postgres_ctx)
         cur = conn.cursor()
-        cur.execute("INSERT INTO users (email, username, password) VALUES (%s, %s, %s)", (email, username, password))
+        cur.execute("INSERT INTO users (email, username, password) VALUES (%s, %s, %s)",
+                    (email, username, password))
         conn.commit()
         cur.close()
         conn.close()
-        return render_template('signup.html', form=form, message = "Регистрация прошла успешно! Теперь вы можете: ")
+        return render_template('signup.html', form=form, message="Регистрация прошла успешно! Теперь вы можете: ")
     return render_template('signup.html', form=form, message="Уже есть аккаунт?")

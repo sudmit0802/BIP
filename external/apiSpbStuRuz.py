@@ -63,7 +63,8 @@ class ApiSpbStuRuz:
                 if response.status == 200:
                     return await response.json()
                 else:
-                    raise apiSpbStuRuzExeptions.ResponseCodeError(f'{apiPaths.root}{path}', response.status)
+                    raise apiSpbStuRuzExeptions.ResponseCodeError(
+                        f'{apiPaths.root}{path}', response.status)
         except client_exceptions.ClientConnectionError as e:
             # Ошибка клиента при запросе на сервер
             raise apiSpbStuRuzExeptions.ClientConnectionError(e)
@@ -100,7 +101,8 @@ class ApiSpbStuRuz:
         :return: A list of departments/higher schools.
         """
         faculties_list = await self.__get_something(
-            lambda faculties_json: [dataClasses.Faculty(**item) for item in faculties_json['faculties']],
+            lambda faculties_json: [dataClasses.Faculty(
+                **item) for item in faculties_json['faculties']],
             apiPaths.faculties,
             "Faculties"
         )
@@ -129,7 +131,8 @@ class ApiSpbStuRuz:
         :return: List of groups in this department/higher school.
         """
         groups_list = await self.__get_something(
-            lambda groups_json: [dataClasses.Group(**item) for item in groups_json['groups']],
+            lambda groups_json: [dataClasses.Group(
+                **item) for item in groups_json['groups']],
             apiPaths.groups_by_faculty_id.format(faculty_id),
             "Groups"
         )
@@ -143,7 +146,8 @@ class ApiSpbStuRuz:
         :return: List of all teachers.
         """
         teacher_list = await self.__get_something(
-            lambda teachers_json: [dataClasses.Teacher(**item) for item in teachers_json['teachers']],
+            lambda teachers_json: [dataClasses.Teacher(
+                **item) for item in teachers_json['teachers']],
             apiPaths.teachers,
             "Teachers"
         )
@@ -169,7 +173,8 @@ class ApiSpbStuRuz:
         :return: Information about the teacher's scheduler.
         """
         scheduler = await self.__get_something(
-            lambda scheduler_json: dataClasses.SchedulerTeacher(**scheduler_json),
+            lambda scheduler_json: dataClasses.SchedulerTeacher(
+                **scheduler_json),
             apiPaths.teachers_scheduler_by_id.format(teacher_id),
             "Teachers scheduler"
         )
@@ -187,8 +192,10 @@ class ApiSpbStuRuz:
         :return: Information about the teacher's scheduler.
         """
         scheduler = await self.__get_something(
-            lambda scheduler_json: dataClasses.SchedulerTeacher(**scheduler_json),
-            apiPaths.teachers_scheduler_by_id_and_date.format(teacher_id, year, month, day),
+            lambda scheduler_json: dataClasses.SchedulerTeacher(
+                **scheduler_json),
+            apiPaths.teachers_scheduler_by_id_and_date.format(
+                teacher_id, year, month, day),
             "Teachers scheduler by day"
         )
         return scheduler
@@ -204,7 +211,8 @@ class ApiSpbStuRuz:
         :return: List of buildings.
         """
         buildings = await self.__get_something(
-            lambda buildings_json: [dataClasses.Building(**item) for item in buildings_json['buildings']],
+            lambda buildings_json: [dataClasses.Building(
+                **item) for item in buildings_json['buildings']],
             apiPaths.buildings,
             "Buildings"
         )
@@ -232,7 +240,8 @@ class ApiSpbStuRuz:
         :return: List of all auditories
         """
         rooms = await self.__get_something(
-            lambda rooms_json: [dataClasses.Room(**item) for item in rooms_json['rooms']],
+            lambda rooms_json: [dataClasses.Room(
+                **item) for item in rooms_json['rooms']],
             apiPaths.rooms_by_building_id.format(building_id),
             "Rooms"
         )
@@ -251,8 +260,10 @@ class ApiSpbStuRuz:
         :return: Schedule in the classroom.
         """
         rooms_scheduler = await self.__get_something(
-            lambda rooms_scheduler_json: dataClasses.SchedulerRoom(**rooms_scheduler_json),
-            apiPaths.rooms_scheduler_by_id_and_building_id.format(building_id, room_id),
+            lambda rooms_scheduler_json: dataClasses.SchedulerRoom(
+                **rooms_scheduler_json),
+            apiPaths.rooms_scheduler_by_id_and_building_id.format(
+                building_id, room_id),
             "Room's scheduler"
         )
         return rooms_scheduler
@@ -274,8 +285,10 @@ class ApiSpbStuRuz:
         :return: Schedule in the classroom
         """
         rooms_scheduler = await self.__get_something(
-            lambda rooms_scheduler_json: dataClasses.SchedulerRoom(**rooms_scheduler_json),
-            apiPaths.rooms_scheduler_by_id_and_building_id_and_date.format(building_id, room_id, year, month, day),
+            lambda rooms_scheduler_json: dataClasses.SchedulerRoom(
+                **rooms_scheduler_json),
+            apiPaths.rooms_scheduler_by_id_and_building_id_and_date.format(
+                building_id, room_id, year, month, day),
             "Room's scheduler by date"
         )
         return rooms_scheduler
@@ -289,7 +302,8 @@ class ApiSpbStuRuz:
         :return: Schedule of the requested group.
         """
         groups_scheduler = await self.__get_something(
-            lambda groups_scheduler_json: dataClasses.SchedulerGroup(**groups_scheduler_json),
+            lambda groups_scheduler_json: dataClasses.SchedulerGroup(
+                **groups_scheduler_json),
             apiPaths.groups_scheduler_by_id.format(group_id),
             "Group's scheduler"
         )
@@ -309,8 +323,10 @@ class ApiSpbStuRuz:
         :return: Schedule of the requested group.
         """
         groups_scheduler = await self.__get_something(
-            lambda groups_scheduler_json: dataClasses.SchedulerGroup(**groups_scheduler_json),
-            apiPaths.groups_scheduler_by_id_and_date.format(group_id, year, month, day),
+            lambda groups_scheduler_json: dataClasses.SchedulerGroup(
+                **groups_scheduler_json),
+            apiPaths.groups_scheduler_by_id_and_date.format(
+                group_id, year, month, day),
             "Group's scheduler by date"
         )
         return groups_scheduler
@@ -325,7 +341,8 @@ class ApiSpbStuRuz:
         :return: List of groups whose name contains the input string.
         """
         groups = await self.__get_something(
-            lambda groups_json: [dataClasses.Group(**item) for item in groups_json['groups']],
+            lambda groups_json: [dataClasses.Group(
+                **item) for item in groups_json['groups']],
             apiPaths.search_groups_by_name.format(groups_name),
             "Group's by name"
         )
@@ -341,7 +358,8 @@ class ApiSpbStuRuz:
         :return: List of teacher whose name contains the input string.
         """
         teachers = await self.__get_something(
-            lambda teachers_json: [dataClasses.Teacher(**item) for item in teachers_json['teachers']],
+            lambda teachers_json: [dataClasses.Teacher(
+                **item) for item in teachers_json['teachers']],
             apiPaths.search_teachers_by_name.format(teachers_name),
             "Teacher's by name"
         )
@@ -357,7 +375,8 @@ class ApiSpbStuRuz:
         :return: List of rooms whose name contains the input string.
         """
         rooms = await self.__get_something(
-            lambda rooms_json: [dataClasses.Auditory(**item) for item in rooms_json['rooms']],
+            lambda rooms_json: [dataClasses.Auditory(
+                **item) for item in rooms_json['rooms']],
             apiPaths.search_rooms_by_name.format(rooms_name),
             "Room's by name"
         )

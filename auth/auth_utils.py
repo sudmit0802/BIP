@@ -7,5 +7,3 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, redirect, url_for, render_template, request
 import smtplib
 import random
-
-

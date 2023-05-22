@@ -143,10 +143,13 @@ class Lesson:
         object.__setattr__(self, "time_start", Time(self.time_start))
         object.__setattr__(self, "time_end", Time(self.time_end))
         object.__setattr__(self, "typeObj", TypeObj(**self.typeObj))
-        object.__setattr__(self, "groups", tuple([Group(**i) for i in self.groups]))
+        object.__setattr__(self, "groups", tuple(
+            [Group(**i) for i in self.groups]))
         if self.teachers is not None:
-            object.__setattr__(self, "teachers", tuple([Teacher(**i) for i in self.teachers]))
-        object.__setattr__(self, "auditories", tuple([Auditory(**i) for i in self.auditories]))
+            object.__setattr__(self, "teachers", tuple(
+                [Teacher(**i) for i in self.teachers]))
+        object.__setattr__(self, "auditories", tuple(
+            [Auditory(**i) for i in self.auditories]))
 
 
 @dataclass(frozen=True)
@@ -157,7 +160,8 @@ class Day:
 
     def __post_init__(self):
         object.__setattr__(self, "date", Date(self.date))
-        object.__setattr__(self, "lessons", tuple([Lesson(**i) for i in self.lessons]))
+        object.__setattr__(self, "lessons", tuple(
+            [Lesson(**i) for i in self.lessons]))
 
 
 @dataclass(frozen=True)

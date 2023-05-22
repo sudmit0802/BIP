@@ -1,4 +1,5 @@
-from .utils import*
+from .utils import *
+
 
 def create_database():
     conn = get_connection(postgres_ctx)
@@ -15,7 +16,7 @@ def create_database():
         query = str(statement).strip()
         if query:
             cur.execute(query)
-            
+
     conn.commit()
     cur.close()
     conn.close()
