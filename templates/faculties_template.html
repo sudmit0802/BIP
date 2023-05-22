@@ -1,39 +1,49 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Список институтов(кафедр)</title>
-    <style>   
-    
-        .center_small {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 3vh;
-          }
-          
-        </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css')}}" />
 </head>
+
 <body>
-    <div class="center_small">
-        <a>Вы авторизовались как пользователь: {{current_user.username}}</a>
-      </div>
-      <div class="center_small">
-      <a href="{{ url_for('logout') }}">Выйти</a>
+    <header>
+        <a href="" class="logo">LOGO</a>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('main') }}">Главная</a></li>
+                <li><a href="{{ url_for('faculties') }}">Институты</a></li>
+                <li><a href="{{ url_for('teachers') }}">Преподаватели</a></li>
+                <li><a href="{{ url_for('buildings') }}">Адреса</a></li>
+                <li><a href="">Инструкция</a></li>
+                <li><a href="">{{current_user.username}} &bigtriangledown;</a>
+                    <ul>
+                        <li><a href="">Профиль</a></li>
+                        <li><a href="">Посещения</a></li>
+                        <li><a href="{{ url_for('logout') }}">Выйти</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div style="align-items: center; padding-bottom: 100px;">
+        <h1 style="margin-top: 100px; text-align: center;">Список институтов(кафедр)</h1>
+        <table border="2" style="width: 535px; margin: 30px auto;">
+            <tr>
+                <th style="width: 160.141px;">ID</th>
+                <th style="width: 212.859px;">Полное название</th>
+                <th style="width: 136px;">Аббревиатура</th>
+            </tr>
+            {% for faculty in faculties %}
+            <tr>
+                <td style="width: 160.141px; text-align: center;">{{faculty.id}}</td>
+                <td style="width: 212.859px; text-align: center;">{{faculty.name}}</td>
+                <td style="width: 136px; text-align: center;">{{faculty.abbr}}</td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
-    <h1>Список институтов(кафедр)</h1>
-    <table style="width: 535px;" border="2">
-        <tr>
-            <th style="width: 160.141px;">ID</th>
-            <th style="width: 212.859px;">Полное название</th>
-            <th style="width: 136px;">Аббревиатура</th>
-        </tr>
-        {% for faculty in faculties %}
-        <tr>
-            <td style="width: 160.141px; text-align: center;">{{faculty.id}}</td>
-            <td style="width: 212.859px; text-align: center;">{{faculty.name}}</td>
-            <td style="width: 136px; text-align: center;">{{faculty.abbr}}</td>
-        </tr>
-        {% endfor %}
-    </table>
 </body>
+
 </html>

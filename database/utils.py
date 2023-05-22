@@ -1,5 +1,6 @@
 import psycopg2
 import sqlparse
+import datetime
 import os
 
 postgres_ctx = {
@@ -10,11 +11,12 @@ postgres_ctx = {
     "password": "0802"
 }
 
+
 def get_connection(ctx):
     return psycopg2.connect(
-    host=ctx['host'],
-    database=ctx['database'],
-    user=ctx['user'],
-    port=ctx['port'],
-    password=ctx['password']
+        host=ctx['host'],
+        database=ctx['database'],
+        user=ctx['user'],
+        port=ctx['port'],
+        password=ctx['password']
     )

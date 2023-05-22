@@ -3,15 +3,19 @@ from auth import LoginManager, login_required, logout_user, Flask, render_templa
 from database import create_database, reg_new_user, get_user_from_db, login_user_proxy
 from api_interface import get_buildings_routine, get_faculties_routine, get_teachers_routine
 from flasgger import Swagger
+import asyncio
+import sys
 
 app = Flask(__name__)
 swagger = Swagger(app)
 login_manager = LoginManager()
 login_manager.login_view = 'signin'
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return get_user_from_db(user_id)
+
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -24,6 +28,7 @@ def signup():
     """
     return reg_new_user()
 
+
 @app.route("/", methods=["GET", "POST"])
 def signin():
     """
@@ -33,7 +38,7 @@ def signin():
       200:
         description: User logged in successfully.
     """
-    return login_user_proxy()
+    return login_user_proxy(request.remote_addr)
 
 
 @app.route("/verify", methods=["GET", "POST"])
@@ -56,7 +61,7 @@ def verify():
     username = request.args.get('username')
     if not username:
         return redirect(url_for('signin'))
-    return verify_user(username)
+    return verify_user(username, request.remote_addr)
 
 
 @app.route("/main", methods=["GET"])
@@ -69,14 +74,12 @@ def main():
       200:
         description: Main page rendered successfully.
     """
-    return render_template('main.html',
-                            teachers_url = url_for('teachers'),
-                                faculties_url=url_for('faculties'),
-                                    buildings_url=url_for('buildings'))
+    return render_template('main.html')
+
 
 @app.route("/teachers", methods=["GET"])
 @login_required
-async def teachers():
+def teachers():
     """
     Teachers endpoint.
     ---
@@ -84,12 +87,13 @@ async def teachers():
       200:
         description: Teachers data retrieved successfully.
     """
-    result = await get_teachers_routine()
+    result = asyncio.run(get_teachers_routine())
     return render_template('teachers_template.html', teachers=result)
+
 
 @app.route("/faculties", methods=["GET"])
 @login_required
-async def faculties():
+def faculties():
     """
     Faculties endpoint.
     ---
@@ -97,12 +101,13 @@ async def faculties():
       200:
         description: Faculties data retrieved successfully.
     """
-    result = await get_faculties_routine()
+    result = asyncio.run(get_faculties_routine())
     return render_template('faculties_template.html', faculties=result)
+
 
 @app.route("/buildings", methods=["GET"])
 @login_required
-async def buildings():
+def buildings():
     """
     Buildings endpoint.
     ---
@@ -110,8 +115,9 @@ async def buildings():
       200:
         description: Buildings data retrieved successfully.
     """
-    result = await get_buildings_routine()
+    result = asyncio.run(get_buildings_routine())
     return render_template('buildings_template.html', buildings=result)
+
 
 @app.route('/logout')
 @login_required
@@ -126,7 +132,10 @@ def logout():
     logout_user()
     return redirect(url_for('signin'))
 
+
 if __name__ == "__main__":
+    if sys.platform:
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     app.secret_key = str(secrets.token_hex(32))
     login_manager.init_app(app)
     create_database()
