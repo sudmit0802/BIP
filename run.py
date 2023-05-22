@@ -134,7 +134,7 @@ def logout():
 
 
 if __name__ == "__main__":
-    if sys.platform:
+    if sys.platform.startswith('win'):
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     app.secret_key = str(secrets.token_hex(32))
     login_manager.init_app(app)
