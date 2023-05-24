@@ -2,13 +2,14 @@
 <html>
 
 <head>
-    <title>Список институтов(кафедр)</title>
+    <title>Faculties</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css')}}" />
 </head>
 
 <body>
     <header>
-        <a href="" class="logo">LOGO</a>
+        <a class="logo"></a>
+        <h1>Подразделения университета</h1>
         <nav>
             <ul>
                 <li><a href="{{ url_for('main') }}">Главная</a></li>
@@ -27,22 +28,35 @@
         </nav>
     </header>
 
-    <div style="align-items: center; padding-bottom: 100px;">
-        <h1 style="margin-top: 100px; text-align: center;">Список институтов(кафедр)</h1>
-        <table border="2" style="width: 535px; margin: 30px auto;">
-            <tr>
-                <th style="width: 160.141px;">ID</th>
-                <th style="width: 212.859px;">Полное название</th>
-                <th style="width: 136px;">Аббревиатура</th>
-            </tr>
-            {% for faculty in faculties %}
-            <tr>
-                <td style="width: 160.141px; text-align: center;">{{faculty.id}}</td>
-                <td style="width: 212.859px; text-align: center;">{{faculty.name}}</td>
-                <td style="width: 136px; text-align: center;">{{faculty.abbr}}</td>
-            </tr>
-            {% endfor %}
-        </table>
+    <div style="padding: 5% 40% 5% 9%;">
+        <div style="background-color: rgba(0, 0, 0, 0);">
+            <table
+                style="width: 100%; border-collapse: collapse; margin: 0 auto; font-size: 16px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                <tr>
+                    <th
+                        style="width: 10%; border: none; padding: 10px; text-align: center; background-color: #333; color: #fff; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;">
+                        ID</th>
+                    <th
+                        style="width: 35%; border: none; padding: 10px; text-align: left; background-color: #333; color: #fff; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;">
+                        Полное название</th>
+                    <th
+                        style="width: 20%; border: none; padding: 10px; text-align: left; background-color: #333; color: #fff; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;">
+                        Аббревиатура</th>
+                </tr>
+                {% for faculty in faculties %}
+                <tr>
+                    <td
+                        style="width: 10%; border: none; padding: 10px; text-align: center; background-color: #f9f9f918;">
+                        {{faculty.id}}</td>
+                    <td style="width: 65%; border: none; padding: 10px; text-align: left; background-color: #f9f9f918;">
+                        {{faculty.name}}
+                    </td>
+                    <td style="width: 25%; border: none; padding: 10px; text-align: left; background-color: #f9f9f918;">
+                        {{faculty.abbr}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 </body>
 
