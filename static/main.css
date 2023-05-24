@@ -9,7 +9,7 @@
 
 body {
     height: 100vh;
-    background-image: url("/static/images/poly.jpg");
+    background-image: url("/static/images/poly1.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -21,7 +21,7 @@ header {
     top: 0;
     left: 0;
     right: 0;
-    background: #419c22;
+    background: #f2f2f2;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -30,10 +30,22 @@ header {
 }
 
 header .logo {
-    font-size: 20px;
-    font-weight: 900;
-    color: #000;
+    background-image: url("/static/images/logo1.png");
+    width: 140px;
+    height: 40px;
+    background-size: cover;
     transition: .5s;
+}
+
+header h1 {
+    text-align: center;
+    font-size: larger;
+    font-family: 'Arial Black', sans-serif;
+    color: #333;
+}
+
+header h1:hover {
+    transform: scale(1.2);
 }
 
 header .logo:hover {

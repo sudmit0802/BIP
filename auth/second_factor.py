@@ -16,7 +16,7 @@ def verify_user(username, ip):
         code_from_db = code_from_db_by_username or code_drom_db_by_email
 
         if verification_code != code_from_db:
-            return render_template('signin.html', form=LoginForm(), message="Двухфакторная аутентификация не пройдена!")
+            return render_template('verify.html', form=form, message="Двухфакторная аутентификация не пройдена!")
         try:
             id_un = try_select_by_username(username)
             id_em = try_select_by_email(username)
