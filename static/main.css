@@ -87,3 +87,28 @@ nav ul li ul li {
 nav ul li:hover>ul {
     display: initial;
 }
+
+.instruction {
+    padding: 2%;
+    background-color: #f2f2f26f;
+    font-size: 18px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.instruction h2 {
+    text-align: center;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.instruction h3 {
+    text-align: center;
+    font-size: larger;
+    padding: 3%
+}
+
+.instruction p {
+    margin: 2%;
+    font-size: larger;
+    text-indent: 2em;
+}
