@@ -159,13 +159,33 @@ def logout():
 @second_factor_required
 def sessions():
     """
-    Sesion control endpoint.
+    Session control endpoint.
     ---
     responses:
       200:
         description: success.
     """
     return update_sessions(request)
+
+
+@app.route("/instruction", methods=["GET"])
+def instruction():
+    """
+    Instruction endpoint.
+    ---
+    responses:
+      200:
+        description: success.
+    """
+    if current_user.is_authenticated:
+        sessions = get_sessions_from_db(current_user.id)
+        ips = list()
+        if sessions is not None:
+            for s in sessions:
+                ips.append(s['ip'])
+            if request.remote_addr in ips:
+                return render_template('wide_instruction.html')
+    return render_template('instruction.html')
 
 
 if __name__ == "__main__":
