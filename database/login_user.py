@@ -1,5 +1,5 @@
 from .utils import *
-from auth import LoginForm, redirect, url_for, render_template, login_user, generate_tf_code
+from auth import LoginForm, redirect, url_for, render_template, login_user, generate_tf_code, current_user
 from .select_auth import get_user_from_db
 from auth.smtp_routine import send_email
 
@@ -39,8 +39,6 @@ def get_user_email_by_id(id):
         return None
     return row[0]
 
-# TODO redirects instead of render_templates
-
 
 def login_user_proxy(ip):
     form = LoginForm()
@@ -60,35 +58,37 @@ def login_user_proxy(ip):
             try:
                 email = get_user_email_by_id(id)
                 code = generate_tf_code()
-                msg = 'One-Time Password for Sign In: ' + code
-                send_email(msg, email)
+
                 conn = get_connection(postgres_ctx)
                 cur = conn.cursor()
 
                 cur.execute(
-                    f"SELECT tfv_time FROM tvf WHERE user_id = {id} AND tvf_address = '{ip}';")
+                    f"SELECT tfv_time FROM tfv WHERE user_id = {id} AND tfv_address = '{ip}';")
                 result = cur.fetchone()
                 if result is not None:
                     tfv_time = result[0]
                     current_time = datetime.datetime.now()
                     time_diff = current_time - tfv_time
 
-                    if time_diff.total_seconds() < 360:
+                    if time_diff.total_seconds() < 3600:
                         login_user(user)
                         return redirect(url_for('main'))
                     else:
+                        msg = 'One-Time Password for Sign In: ' + code
+                        send_email(msg, email)
                         cur.execute(
-                            f"UPDATE tvf SET tfv_code = '{code}', tfv_time = '{current_time}' WHERE user_id = {id} AND tvf_address = '{ip}';")
-
+                            f"UPDATE tfv SET tfv_code = '{code}', tfv_time = '{current_time}' WHERE user_id = {id} AND tfv_address = '{ip}';")
                 else:
+                    msg = 'One-Time Password for Sign In: ' + code
+                    send_email(msg, email)
                     cur.execute(
-                        f"INSERT INTO tvf (tfv_code, tfv_time, tvf_address, user_id) VALUES ('{code}', '{datetime.datetime.now()}', '{ip}', {id})")
+                        f"INSERT INTO tfv (tfv_code, tfv_time, tfv_address, user_id) VALUES ('{code}', '{datetime.datetime.now()}', '{ip}', {id})")
 
                 conn.commit()
                 cur.close()
                 conn.close()
 
-            except Exception as e:
+            except Exception:
                 return render_template('signin.html', form=form, message="Невозможно отправить код аутентификации.")
 
             return redirect(url_for('verify', username=username))

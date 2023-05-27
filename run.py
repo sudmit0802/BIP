@@ -1,7 +1,9 @@
 import secrets
-from auth import LoginManager, login_required, logout_user, Flask, render_template, redirect, url_for, request, verify_user
-from database import create_database, reg_new_user, get_user_from_db, login_user_proxy
+from functools import wraps
+from auth import LoginManager, login_required, logout_user, Flask, render_template, redirect, url_for, request, verify_user, current_user
+from database import create_database, reg_new_user, get_user_from_db, login_user_proxy, get_sessions_from_db
 from api_interface import get_buildings_routine, get_faculties_routine, get_teachers_routine
+from ui import update_sessions
 from flasgger import Swagger
 import asyncio
 import sys
@@ -10,6 +12,21 @@ app = Flask(__name__)
 swagger = Swagger(app)
 login_manager = LoginManager()
 login_manager.login_view = 'signin'
+
+
+def second_factor_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        sessions = get_sessions_from_db(current_user.id)
+        ips = list()
+        if sessions is None:
+            return redirect(url_for('signin'))
+        for s in sessions:
+            ips.append(s['ip'])
+        if request.remote_addr not in ips:
+            return redirect(url_for('signin'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 @login_manager.user_loader
@@ -66,6 +83,7 @@ def verify():
 
 @app.route("/main", methods=["GET"])
 @login_required
+@second_factor_required
 def main():
     """
     Main page endpoint.
@@ -79,6 +97,7 @@ def main():
 
 @app.route("/teachers", methods=["GET"])
 @login_required
+@second_factor_required
 def teachers():
     """
     Teachers endpoint.
@@ -93,6 +112,7 @@ def teachers():
 
 @app.route("/faculties", methods=["GET"])
 @login_required
+@second_factor_required
 def faculties():
     """
     Faculties endpoint.
@@ -107,6 +127,7 @@ def faculties():
 
 @app.route("/buildings", methods=["GET"])
 @login_required
+@second_factor_required
 def buildings():
     """
     Buildings endpoint.
@@ -131,6 +152,20 @@ def logout():
     """
     logout_user()
     return redirect(url_for('signin'))
+
+
+@app.route("/sessions", methods=["GET", "POST"])
+@login_required
+@second_factor_required
+def sessions():
+    """
+    Sesion control endpoint.
+    ---
+    responses:
+      200:
+        description: success.
+    """
+    return update_sessions(request)
 
 
 if __name__ == "__main__":
