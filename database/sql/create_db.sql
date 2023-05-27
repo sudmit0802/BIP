@@ -8,10 +8,10 @@ CREATE TABLE IF NOT EXISTS users(
 
 );
 
-CREATE TABLE IF NOT EXISTS tvf (
+CREATE TABLE IF NOT EXISTS tfv (
     tfv_code VARCHAR(6),
     tfv_time TIMESTAMP,
-    tvf_address VARCHAR(64) PRIMARY KEY,
+    tfv_address VARCHAR(64) PRIMARY KEY,
     user_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );

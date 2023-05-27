@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Сессии пользователя</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='sessions.css')}}" />
+</head>
+
+<body>
+    <header>
+        <a class="logo"></a>
+        <h1>Контроль сессий пользователя</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('main') }}">Главная</a></li>
+                <li><a href="{{ url_for('faculties') }}">Институты</a></li>
+                <li><a href="{{ url_for('teachers') }}">Преподаватели</a></li>
+                <li><a href="{{ url_for('buildings') }}">Адреса</a></li>
+                <li><a href="">Инструкция</a></li>
+                <li><a>{{current_user.username}} &bigtriangledown;</a>
+                    <ul>
+                        <li><a href="">Профиль</a></li>
+                        <li><a href="{{ url_for('sessions') }}">Контроль сессий</a></li>
+                        <li><a href="{{ url_for('logout') }}">Выйти</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <div style="padding: 5% 5% 5% 5%;">
+        <form method="POST">
+            {{ form.csrf_token }}
+            <div style="background-color: rgba(0, 0, 0, 0); padding-bottom: 3%;">
+                <table
+                    style="width: 100%; border-collapse: collapse; margin: 0 auto; font-size: 16px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                    <tr>
+                        <th
+                            style="width: 10%; border: none; padding: 10px; text-align: center; background-color: #333; color: #fff; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;">
+                            IP-адрес</th>
+                        <th
+                            style="width: 35%; border: none; padding: 10px; text-align: left; background-color: #333; color: #fff; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;">
+                            Дата и время входа</th>
+                        <th
+                            style="width: 20%; border: none; padding: 10px; text-align: center; background-color: #333; color: #fff; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;">
+                            Действие</th>
+                    </tr>
+                    {% for row in form.data %}
+                    <tr>
+                        <td
+                            style="width: 35%; border: none; padding: 10px; text-align: center; background-color: #f9f9f918;">
+                            {{row.ip}}
+                        </td>
+
+                        <td
+                            style="width: 35%; border: none; padding: 10px; text-align: left; background-color: #f9f9f918;">
+                            {{row.time}}
+                        </td>
+                        <td
+                            style="width: 30%; border: none; padding: 10px; text-align: left; background-color: #f9f9f918;">
+                            <input class="button" type="submit" name="{{row.id}}" id="{{row.id}}"
+                                value="Завершить сессию"></input>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {{ form.exit_all(class="button") }}
+        </form>
+    </div>
+
+</body>
+
+</html>

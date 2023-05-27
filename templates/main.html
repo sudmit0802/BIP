@@ -19,7 +19,7 @@
         <li><a>{{current_user.username}} &bigtriangledown;</a>
           <ul>
             <li><a href="">Профиль</a></li>
-            <li><a href="">Посещения</a></li>
+            <li><a href="{{ url_for('sessions') }}">Контроль сессий</a></li>
             <li><a href="{{ url_for('logout') }}">Выйти</a></li>
           </ul>
         </li>
