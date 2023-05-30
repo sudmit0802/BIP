@@ -194,8 +194,5 @@ if __name__ == "__main__":
     app.secret_key = str(secrets.token_hex(32))
     login_manager.init_app(app)
     create_database()
-<<<<<<< HEAD
-    app.run(host = '192.168.0.7', port='5000')
-=======
     app.run(port=80, host='10.128.0.11', debug=True)
->>>>>>> origin/master
+
