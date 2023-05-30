@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS users(
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(120) NOT NULL
+    
 );
 INSERT INTO users (username, password) VALUES ('dima', 'pbkdf2:sha256:600000$WLlo4uTqXK2rxWnE$c227356f0291be82bbda5a8fcd47589edff320a506ab31850431e268d9dca95a');
 INSERT INTO users (username, password) VALUES ('danil', 'pbkdf2:sha256:600000$IhKogcPPcs1BIBsE$1d8bd9e9c439046070deac602184c923c0a13ff4216c349c6ba4755e7bf1a409');
