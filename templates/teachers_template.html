@@ -1,40 +1,63 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Список преподавателей</title>
-    <style>   
-    
-    .center_small {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 3vh;
-      }
-      
-    </style>
 
+<head>
+    <title>Teachers</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css')}}" />
 </head>
+
 <body>
-    <div class="center_small">
-        <a>Вы авторизовались как пользователь: {{current_user.username}}</a>
+    <header>
+        <a class="logo"></a>
+        <h1>Преподаватели университета</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('main') }}">Главная</a></li>
+                <li><a href="{{ url_for('faculties') }}">Институты</a></li>
+                <li><a href="{{ url_for('teachers') }}">Преподаватели</a></li>
+                <li><a href="{{ url_for('buildings') }}">Адреса</a></li>
+                <li><a href="{{ url_for('instruction') }}">Инструкция</a></li>
+                <li><a href="">{{current_user.username}} &bigtriangledown;</a>
+                    <ul>
+                        <li><a href="">Профиль</a></li>
+                        <li><a href="{{ url_for('sessions') }}">Контроль сессий</a></li>
+                        <li><a href="{{ url_for('logout') }}">Выйти</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div style="padding: 5% 30% 5% 9%;">
+        <div style="background-color: rgba(0, 0, 0, 0);">
+            <table
+                style="width: 100%; border-collapse: collapse; margin: 0 auto; font-size: 16px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                <tr>
+                    <th
+                        style="width: 10%; border: none; padding: 10px; text-align: center; background-color: #333; color: #fff; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;">
+                        ID</th>
+                    <th
+                        style="width: 35%; border: none; padding: 10px; text-align: left; background-color: #333; color: #fff; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;">
+                        ФИО преподавателя</th>
+                    <th
+                        style="width: 20%; border: none; padding: 10px; text-align: left; background-color: #333; color: #fff; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;">
+                        Подразделение</th>
+                </tr>
+                {% for teacher in teachers %}
+                <tr>
+                    <td
+                        style="width: 10%; border: none; padding: 10px; text-align: center; background-color: #f9f9f918;">
+                        {{teacher.id}}</td>
+                    <td style="width: 25%; border: none; padding: 10px; text-align: left; background-color: #f9f9f918;">
+                        {{teacher.full_name}}
+                    </td>
+                    <td style="width: 65%; border: none; padding: 10px; text-align: left; background-color: #f9f9f918;">
+                        {{teacher.chair}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
-    <div class="center_small">
-        <a href="{{ url_for('logout') }}">Выйти</a>
-    </div>
-    <h1>Список преподавателей</h1>
-    <table border="2">
-        <tr>
-            <th>ID</th>
-            <th>ФИО</th>
-            <th>Кафедра</th>
-        </tr>
-        {% for teacher in teachers %}
-        <tr>
-            <td>{{ teacher.id }}</td>
-            <td>{{ teacher.full_name }}</td>
-            <td>{{ teacher.chair }}</td>
-        </tr>
-        {% endfor %}
-    </table>
 </body>
+
 </html>

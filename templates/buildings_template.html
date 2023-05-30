@@ -1,39 +1,71 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Buildings</title>
-    <style>   
-        .center_small {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 3vh;
-          }
-        </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css')}}" />
 </head>
+
 <body>
-    <div class="center_small">
-        <a>Вы авторизовались как пользователь: {{current_user.username}}</a>
-      </div>
-      <div class="center_small">
-      <a href="{{ url_for('logout') }}">Выйти</a>
-      </div>
-    <h1>Учебные корпуса</h1>
-    <table style="width: 535px;" border="2">
-        <tr>
-            <th style="width: 160px;">ID</th>
-            <th style="width: 250px;">Название</th>
-            <th style="width: 125px;">Аббревиатура</th>
-            <th style="width: 1000px;">Адрес</th>
-        </tr>
-        {% for building in buildings %}
-        <tr>
-            <td style="width: 160.141px; text-align: center;">{{building.id}}</td>
-            <td style="width: 212.859px; text-align: center;">{{building.name}}</td>
-            <td style="width: 136px; text-align: center;">{{building.abbr}}</td>
-            <td style="width: 300px; text-align: center;">{{building.address}}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <header>
+        <a class="logo"></a>
+        <h1>Учебные корпуса</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('main') }}">Главная</a></li>
+                <li><a href="{{ url_for('faculties') }}">Институты</a></li>
+                <li><a href="{{ url_for('teachers') }}">Преподаватели</a></li>
+                <li><a href="{{ url_for('buildings') }}">Адреса</a></li>
+                <li><a href="{{ url_for('instruction') }}">Инструкция</a></li>
+                <li><a href="">{{current_user.username}} &bigtriangledown;</a>
+                    <ul>
+                        <li><a href="">Профиль</a></li>
+                        <li><a href="{{ url_for('sessions') }}">Контроль сессий</a></li>
+                        <li><a href="{{ url_for('logout') }}">Выйти</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+
+    <div style="padding: 5% 35% 5% 9%;">
+        <div style="background-color: rgba(0, 0, 0, 0);">
+            <table
+                style="width: 100%; border-collapse: collapse; margin: 0 auto; font-size: 16px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                <tr>
+                    <th
+                        style="width: 10%; border: none; padding: 10px; text-align: center; background-color: #333; color: #fff; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;">
+                        ID</th>
+                    <th
+                        style="width: 35%; border: none; padding: 10px; text-align: left; background-color: #333; color: #fff; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;">
+                        Название</th>
+                    <th
+                        style="width: 20%; border: none; padding: 10px; text-align: center; background-color: #333; color: #fff; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;">
+                        Аббревиатура</th>
+                    <th
+                        style="width: 35%; border: none; padding: 10px; text-align: left; background-color: #333; color: #fff; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;">
+                        Адрес</th>
+                </tr>
+                {% for building in buildings %}
+                <tr>
+                    <td
+                        style="width: 10%; border: none; padding: 10px; text-align: center; background-color: #f9f9f918;">
+                        {{building.id}}</td>
+                    <td style="width: 40%; border: none; padding: 10px; text-align: left; background-color: #f9f9f918;">
+                        {{building.name}}
+                    </td>
+                    <td
+                        style="width: 20%; border: none; padding: 10px; text-align: center; background-color: #f9f9f918;">
+                        {{building.abbr}}</td>
+                    <td style="width: 30%; border: none; padding: 10px; text-align: left; background-color: #f9f9f918;">
+                        {{building.address}}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
 </body>
+
 </html>

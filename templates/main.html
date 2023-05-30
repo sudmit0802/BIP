@@ -1,43 +1,32 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Manager - Главная</title>
-    <style>
-      .center {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 10vh;
-      }
 
-      .center_small {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 3vh;
-      }
-      
-      button {
-        font-size: 24px;
-        padding: 16px 32px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="center_small">
-      <a>Вы авторизовались как пользователь: {{current_user.username}}</a>
-    </div>
-    <div class="center_small">
-    <a href="{{ url_for('logout') }}">Выйти</a>
-    </div>
-    <div class="center">
-      <button onclick="window.location.href='{{teachers_url}}'">Перейти на страницу со списком преподавателей</button>
-    </div>
-    <div class="center">
-      <button onclick="window.location.href='{{faculties_url}}'">Перейти на страницу со списком институтов</button>
-    </div>
-    <div class="center">
-      <button onclick="window.location.href='{{buildings_url}}'">Перейти на страницу с адресами учебных корпусов</button>
-    </div>
-  </body>
+<head>
+  <title>Manager - Главная</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='main.css')}}" />
+</head>
+
+<body>
+  <header>
+    <a class="logo"></a>
+    <nav>
+      <ul>
+        <li><a href="{{ url_for('main') }}">Главная</a></li>
+        <li><a href="{{ url_for('faculties') }}">Институты</a></li>
+        <li><a href="{{ url_for('teachers') }}">Преподаватели</a></li>
+        <li><a href="{{ url_for('buildings') }}">Адреса</a></li>
+        <li><a href="{{ url_for('instruction') }}">Инструкция</a></li>
+        <li><a>{{current_user.username}} &bigtriangledown;</a>
+          <ul>
+            <li><a href="">Профиль</a></li>
+            <li><a href="{{ url_for('sessions') }}">Контроль сессий</a></li>
+            <li><a href="{{ url_for('logout') }}">Выйти</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+</body>
+
 </html>

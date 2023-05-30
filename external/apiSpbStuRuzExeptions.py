@@ -56,7 +56,8 @@ class JsonTypeError(ConvertJsonException):
     """Something throw TypeError in JSON convert process"""
 
     def __init__(self, e):
-        super().__init__(f'Something went wrong in the JSON conversion process: {e}')
+        super().__init__(
+            f'Something went wrong in the JSON conversion process: {e}')
 
 
 class JsonKeyError(ConvertJsonException):
