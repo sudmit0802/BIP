@@ -5,11 +5,6 @@ CREATE TABLE IF NOT EXISTS users(
     email VARCHAR(50) UNIQUE NOT NULL,
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(120) NOT NULL
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> origin/master
 );
 
 CREATE TABLE IF NOT EXISTS tfv (
