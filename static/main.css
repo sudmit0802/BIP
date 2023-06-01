@@ -112,3 +112,45 @@ nav ul li:hover>ul {
     font-size: larger;
     text-indent: 2em;
 }
+
+.button {
+    display: block;
+    width: 200px;
+    height: 50px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    font-size: 16px;
+    text-align: center;
+    line-height: 50px;
+    background-color: white;
+    color: black;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.2s ease-in-out;
+}
+
+.button:hover {
+    background-color: black;
+    color: white;
+}
+
+
+.inline_button {
+    display: inline-block;
+    width: 200px;
+    height: 50px;
+    margin: 10px;
+    font-size: 16px;
+    text-align: center;
+    line-height: 50px;
+    background-color: white;
+    color: black;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.2s ease-in-out;
+}
+
+.inline_button:hover {
+    background-color: black;
+    color: white;
+}

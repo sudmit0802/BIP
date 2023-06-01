@@ -27,6 +27,59 @@
     </nav>
   </header>
 
+  <div style="padding: 5%;">
+    <form method="POST">
+      {{ form.csrf_token }}
+      {% if not form.data %}
+      <p style="margin: 30px; text-align: center; font-size:24px">К сожалению, у вас еще нет ни одного плана, но вы
+        можете создать свой
+        первый план, нажав на
+        эту кнопку:</p>
+      {% else %}
+      <div style="background-color: rgba(0, 0, 0, 0); padding-bottom: 3%;">
+        <table
+          style="width: 80%; border-collapse: collapse; margin: 0 auto; font-size: 16px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+          <tr>
+            <th
+              style="width: 25%; border: none; padding: 10px; text-align: center; background-color: #333; color: #fff; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;">
+              Название плана</th>
+            <th
+              style="width: 25%; border: none; padding: 10px; text-align: center; background-color: #333; color: #fff; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;">
+              Статус</th>
+            <th
+              style="width: 50%; border: none; padding: 10px; text-align: center; background-color: #333; color: #fff; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;">
+              Доступные действия</th>
+          </tr>
+          {% for row in form.data %}
+          <tr>
+            <td
+              style="width: 25%; border: none; font-size:larger; padding: 10px; text-align: center; background-color: #f9f9f918;">
+              {{row.name}}
+            </td>
+
+            <td
+              style="width: 25%; border: none; font-size:larger; padding: 10px; text-align: center; background-color: #f9f9f918;">
+              {{row.status}}
+            </td>
+            <td style="width: 50%; border: none; padding: 10px; text-align: center; background-color: #f9f9f918;">
+              <input class="inline_button" type="submit" name="del{{row.id}}" id="del{{row.id}}"
+                value="Удалить"></input>
+              {% if row.status == 'muted' %}
+              <input class="inline_button" type="submit" name="unmute{{row.id}}" id="unmute{{row.id}}"
+                value="Включить уведомления"></input>
+              {% elif row.status == 'active' %}
+              <input class="inline_button" type="submit" name="mute{{row.id}}" id="mute{{row.id}}"
+                value="Отключить уведомления"></input>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+      {% endif %}
+      {{ form.create_plan(class="button") }}
+    </form>
+
 </body>
 
 </html>

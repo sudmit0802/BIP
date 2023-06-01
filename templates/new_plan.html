@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Manager - Главная</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css')}}" />
+</head>
+
+<body>
+    <header>
+        <a class="logo"></a>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('main') }}">Главная</a></li>
+                <li><a href="{{ url_for('faculties') }}">Институты</a></li>
+                <li><a href="{{ url_for('teachers') }}">Преподаватели</a></li>
+                <li><a href="{{ url_for('buildings') }}">Адреса</a></li>
+                <li><a href="{{ url_for('instruction') }}">Инструкция</a></li>
+                <li><a>{{current_user.username}} &bigtriangledown;</a>
+                    <ul>
+                        <li><a href="">Профиль</a></li>
+                        <li><a href="{{ url_for('sessions') }}">Контроль сессий</a></li>
+                        <li><a href="{{ url_for('logout') }}">Выйти</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div style="padding: 10%;">
+
+        <p style="margin: 30px; text-align: center; font-size:24px">Тут нужно связаться с ботом, выбрать группу,
+            предмет, добавить дедлайны и тд и тп...</p>
+
+    </div>
+</body>
+
+</html>
