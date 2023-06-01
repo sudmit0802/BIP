@@ -3,7 +3,7 @@ from functools import wraps
 from auth import LoginManager, login_required, logout_user, Flask, render_template, redirect, url_for, request, verify_user, current_user
 from database import create_database, reg_new_user, get_user_from_db, login_user_proxy, get_sessions_from_db
 from api_interface import get_buildings_routine, get_faculties_routine, get_teachers_routine
-from ui import update_sessions
+from ui import update_sessions, update_main
 from flasgger import Swagger
 import asyncio
 import sys
@@ -81,7 +81,7 @@ def verify():
     return verify_user(username, request.remote_addr)
 
 
-@app.route("/main", methods=["GET"])
+@app.route("/main",  methods=["GET", "POST"])
 @login_required
 @second_factor_required
 def main():
@@ -92,7 +92,7 @@ def main():
       200:
         description: Main page rendered successfully.
     """
-    return render_template('main.html')
+    return update_main(request)
 
 
 @app.route("/teachers", methods=["GET"])
@@ -186,6 +186,13 @@ def instruction():
             if request.remote_addr in ips:
                 return render_template('wide_instruction.html')
     return render_template('instruction.html')
+
+
+@app.route("/new_plan", methods=["GET", "POST"])
+@login_required
+@second_factor_required
+def new_plan():
+    return render_template('new_plan.html')
 
 
 if __name__ == "__main__":
