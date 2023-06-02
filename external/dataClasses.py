@@ -21,7 +21,7 @@ class Faculty:
 
 
 @dataclass(frozen=True)
-class Group:
+class sGroup:
     id: int
     name: str
     level: int

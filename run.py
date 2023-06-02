@@ -3,7 +3,7 @@ from functools import wraps
 from auth import LoginManager, login_required, logout_user, Flask, render_template, redirect, url_for, request, verify_user, current_user
 from database import create_database, reg_new_user, get_user_from_db, login_user_proxy, get_sessions_from_db
 from api_interface import get_buildings_routine, get_faculties_routine, get_teachers_routine
-from ui import update_sessions, update_main
+from ui import update_sessions, update_main, create_plan
 from flasgger import Swagger
 import asyncio
 import sys
@@ -192,7 +192,7 @@ def instruction():
 @login_required
 @second_factor_required
 def new_plan():
-    return render_template('new_plan.html')
+    return create_plan(request)
 
 
 if __name__ == "__main__":

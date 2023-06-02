@@ -9,3 +9,9 @@ class SessionsForm(FlaskForm):
 class PlansForm(FlaskForm):
     data = None
     create_plan = SubmitField('Создать новый план')
+
+
+class NewPlanForm(FlaskForm):
+    faculties = SelectField('Институт')
+    groups = SelectField('Группа')
+    confirm = SubmitField('Создать')

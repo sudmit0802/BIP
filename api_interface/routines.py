@@ -30,6 +30,13 @@ async def get_faculties_routine():
     return res
 
 
+async def get_groups_on_faculties_by_id_routine(id):
+    res = "groups"
+    async with ApiSpbStuRuz() as api:
+        res = await api.get_groups_on_faculties_by_id(id)
+    return res
+
+
 async def get_buildings_routine():
     res = "buildings"
     async with ApiSpbStuRuz() as api:

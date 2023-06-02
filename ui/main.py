@@ -12,7 +12,6 @@ def update_main(req):
 
     if form.validate_on_submit():
         if form.data is not None:
-            print(req.form.keys())
             for plan in form.data:
                 if 'del' + plan['id'] in req.form.keys():
                     delete_plan(plan['id'])
