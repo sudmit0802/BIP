@@ -7,6 +7,7 @@ from ui import update_sessions
 from flasgger import Swagger
 import asyncio
 import sys
+from flask import send_from_directory
 
 app = Flask(__name__)
 swagger = Swagger(app)
@@ -186,6 +187,11 @@ def instruction():
             if request.remote_addr in ips:
                 return render_template('wide_instruction.html')
     return render_template('instruction.html')
+
+
+@app.route('/.well-known/acme-challenge/<path:filename>')
+def serve_challenge_file(filename):
+    return send_from_directory('.well-known/acme-challenge', filename)
 
 
 if __name__ == "__main__":
