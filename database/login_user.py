@@ -88,7 +88,8 @@ def login_user_proxy(ip):
                 cur.close()
                 conn.close()
 
-            except Exception:
+            except Exception as e:
+                print(e)
                 return render_template('signin.html', form=form, message="Невозможно отправить код аутентификации.")
 
             return redirect(url_for('verify', username=username))

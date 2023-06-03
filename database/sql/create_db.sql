@@ -1,12 +1,14 @@
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS plans CASCADE;
+DROP TABLE IF EXISTS tfv CASCADE;
+
 
 CREATE TABLE IF NOT EXISTS users(
     id SERIAL PRIMARY KEY,
     email VARCHAR(50) UNIQUE NOT NULL,
     username VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(120) NOT NULL
-
+    password VARCHAR(120) NOT NULL,
+    tg_chat_id VARCHAR(15) UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS tfv (
@@ -22,9 +24,10 @@ CREATE TABLE IF NOT EXISTS plans (
     id SERIAL PRIMARY KEY,
     name VARCHAR(32) NOT NULL,
     status VARCHAR(16) NOT NULL,
-    tg_chat_id VARCHAR(32),
+    tg_chat_id_ VARCHAR(15),
     user_id INT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    FOREIGN KEY (tg_chat_id_) REFERENCES users (tg_chat_id) ON DELETE CASCADE
 );
 
 
