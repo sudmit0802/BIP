@@ -1,1 +1,1 @@
-from .routines import *
+from .routines import get_buildings_routine, get_groups_on_faculties_by_id_routine, get_faculties_routine, get_subjects_routine, get_teachers_routine

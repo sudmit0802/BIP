@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Manager - Главная</title>
+    <title>Новый план</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='new_plan.css')}}" />
 </head>
 
@@ -31,7 +31,10 @@
             {{ form.csrf_token }}
             {{ form.faculties(onchange="this.form.submit();")}}
             {{ form.groups(onchange="this.form.submit();")}}
+            {{ form.plan_name(class="stringf") }}
+            <p style="color: rgba(255, 0, 0, 0.662);">{{ message }}</p>
             {{ form.confirm }}
+
         </form>
     </div>
 </body>

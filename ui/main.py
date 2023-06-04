@@ -22,6 +22,8 @@ def update_main(req):
                 if 'unmute' + plan['id'] in req.form.keys():
                     unmute_plan(plan['id'])
                     return redirect(url_for('main'))
+                if 'edit' + plan['id'] in req.form.keys():
+                    return redirect(url_for('subjects', plan_id=plan['id']))
         return redirect(url_for('new_plan'))
 
     return render_template('main.html', form=form)
