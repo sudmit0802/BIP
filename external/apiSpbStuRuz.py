@@ -131,7 +131,7 @@ class ApiSpbStuRuz:
         :return: List of groups in this department/higher school.
         """
         groups_list = await self.__get_something(
-            lambda groups_json: [dataClasses.Group(
+            lambda groups_json: [dataClasses.sGroup(
                 **item) for item in groups_json['groups']],
             apiPaths.groups_by_faculty_id.format(faculty_id),
             "Groups"

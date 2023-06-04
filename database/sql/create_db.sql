@@ -5,16 +5,46 @@ CREATE TABLE IF NOT EXISTS users(
     email VARCHAR(50) UNIQUE NOT NULL,
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(120) NOT NULL
-
 );
 
 CREATE TABLE IF NOT EXISTS tfv (
+    id SERIAL PRIMARY KEY,
     tfv_code VARCHAR(6),
     tfv_time TIMESTAMP,
-    tfv_address VARCHAR(64) PRIMARY KEY,
+    tfv_address VARCHAR(64),
     user_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
+
+
+CREATE TABLE IF NOT EXISTS plans (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(32) NOT NULL,
+    status VARCHAR(16) NOT NULL,
+    tg_chat_id VARCHAR(32),
+    group_id VARCHAR(16) NOT NULL,
+    user_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS subjects (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(128) NOT NULL,
+    plan_id INT NOT NULL,
+    FOREIGN KEY (plan_id) REFERENCES plans(id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS deadlines (
+    id SERIAL PRIMARY KEY,
+    deadline_time TIMESTAMP NOT NULL,
+    deadline_status BOOLEAN NOT NULL,
+    specifier VARCHAR(32) NOT NULL,
+    subject_id INT NOT NULL,
+    FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
+);
+
 
 INSERT INTO users (email, username, password) VALUES ('sudmit082@mail.ru', 'dima', 'pbkdf2:sha256:600000$WLlo4uTqXK2rxWnE$c227356f0291be82bbda5a8fcd47589edff320a506ab31850431e268d9dca95a');
 INSERT INTO users (email, username, password) VALUES ('denis.ne.povs@gmail.com', 'danil', 'pbkdf2:sha256:600000$IhKogcPPcs1BIBsE$1d8bd9e9c439046070deac602184c923c0a13ff4216c349c6ba4755e7bf1a409');

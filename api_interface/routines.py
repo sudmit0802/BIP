@@ -1,4 +1,4 @@
-from external import ApiSpbStuRuz
+from .utils import *
 
 
 async def get_teachers_routine():
@@ -27,6 +27,47 @@ async def get_faculties_routine():
     res = "faculties"
     async with ApiSpbStuRuz() as api:
         res = await api.get_faculties()
+    return res
+
+
+async def get_groups_on_faculties_by_id_routine(id):
+    res = "groups"
+    async with ApiSpbStuRuz() as api:
+        res = await api.get_groups_on_faculties_by_id(id)
+    return res
+
+
+async def get_subjects_routine(group_id):
+    res = "subjects"
+    current_full_date = datetime.datetime.now()
+
+    if current_full_date.month == 1:
+        year = current_full_date.year - 1
+        month = 10
+    else:
+        if current_full_date.month < 9:
+            year = current_full_date.year
+            month = 4
+        else:
+            year = current_full_date.year
+            month = 10
+
+    day = get_second_monday(year, month)
+
+    async with ApiSpbStuRuz() as api:
+        res1 = await api.get_groups_scheduler_by_id_and_date(group_id, year, month, day)
+        res2 = await api.get_groups_scheduler_by_id_and_date(group_id, year, month, day + 7)
+
+    res = list()
+    for day in res1.days:
+        for lesson in day.lessons:
+            if lesson.subject not in res:
+                res.append(lesson.subject)
+
+    for day in res2.days:
+        if lesson.subject not in res:
+            res.append(lesson.subject)
+
     return res
 
 

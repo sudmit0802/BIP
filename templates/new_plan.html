@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Новый план</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='new_plan.css')}}" />
+</head>
+
+<body>
+    <header>
+        <a class="logo"></a>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('main') }}">Главная</a></li>
+                <li><a href="{{ url_for('faculties') }}">Институты</a></li>
+                <li><a href="{{ url_for('teachers') }}">Преподаватели</a></li>
+                <li><a href="{{ url_for('buildings') }}">Адреса</a></li>
+                <li><a href="{{ url_for('instruction') }}">Инструкция</a></li>
+                <li><a>{{current_user.username}} &bigtriangledown;</a>
+                    <ul>
+                        <li><a href="">Профиль</a></li>
+                        <li><a href="{{ url_for('sessions') }}">Контроль сессий</a></li>
+                        <li><a href="{{ url_for('logout') }}">Выйти</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <div class="form-container">
+        <form method="POST">
+            {{ form.csrf_token }}
+            {{ form.faculties(onchange="this.form.submit();")}}
+            {{ form.groups(onchange="this.form.submit();")}}
+            {{ form.plan_name(class="stringf") }}
+            <p style="color: rgba(255, 0, 0, 0.662);">{{ message }}</p>
+            {{ form.confirm }}
+
+        </form>
+    </div>
+</body>
+
+</html>

@@ -3,7 +3,7 @@ from functools import wraps
 from auth import LoginManager, login_required, logout_user, Flask, render_template, redirect, url_for, request, verify_user, current_user
 from database import create_database, reg_new_user, get_user_from_db, login_user_proxy, get_sessions_from_db
 from api_interface import get_buildings_routine, get_faculties_routine, get_teachers_routine
-from ui import update_sessions
+from ui import update_sessions, update_main, create_plan, set_deadlines
 from flasgger import Swagger
 import asyncio
 import sys
@@ -77,12 +77,13 @@ def verify():
         description: Redirect to sign-in page if username is missing.
     """
     username = request.args.get('username')
-    if not username:
-        return redirect(url_for('signin'))
-    return verify_user(username, request.remote_addr)
+    if username and request.referrer:
+        if request.referrer.startswith('https://spbstu-ruz-manager.ru'):
+            return verify_user(username, request.remote_addr)
+    return redirect(url_for('signin'))
 
 
-@app.route("/main", methods=["GET"])
+@app.route("/main",  methods=["GET", "POST"])
 @login_required
 @second_factor_required
 def main():
@@ -93,7 +94,7 @@ def main():
       200:
         description: Main page rendered successfully.
     """
-    return render_template('main.html')
+    return update_main(request)
 
 
 @app.route("/teachers", methods=["GET"])
@@ -194,12 +195,27 @@ def serve_challenge_file(filename):
     return send_from_directory('.well-known/acme-challenge', filename)
 
 
+@app.route("/new_plan", methods=["GET", "POST"])
+@login_required
+@second_factor_required
+def new_plan():
+    return create_plan(request)
+
+
+@app.route("/new_plan/subjects", methods=["GET", "POST"])
+@login_required
+@second_factor_required
+def subjects():
+    return set_deadlines(request)
+
+
 if __name__ == "__main__":
     if sys.platform.startswith('win'):
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     app.secret_key = str(secrets.token_hex(32))
     login_manager.init_app(app)
     create_database()
-    context = ('/etc/letsencrypt/live/spbstu-ruz-manager.ru/fullchain.pem',
-               '/etc/letsencrypt/live/spbstu-ruz-manager.ru/privkey.pem')
-    app.run(port=443, host='10.128.0.11', debug=True, ssl_context=context)
+
+context = ('/etc/letsencrypt/live/spbstu-ruz-manager.ru/fullchain.pem',
+           '/etc/letsencrypt/live/spbstu-ruz-manager.ru/privkey.pem')
+app.run(port=443, host='10.128.0.11', debug=True, ssl_context=context)
