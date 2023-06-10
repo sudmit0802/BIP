@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Cоздание плана</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='deadlines.css')}}" />
+</head>
+
+<body>
+    <header>
+        <a class="logo"></a>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('main') }}">Главная</a></li>
+                <li><a href="{{ url_for('faculties') }}">Институты</a></li>
+                <li><a href="{{ url_for('teachers') }}">Преподаватели</a></li>
+                <li><a href="{{ url_for('buildings') }}">Адреса</a></li>
+                <li><a href="{{ url_for('instruction') }}">Инструкция</a></li>
+                <li><a>{{current_user.username}} &bigtriangledown;</a>
+                    <ul>
+                        <li><a href="">Профиль</a></li>
+                        <li><a href="{{ url_for('sessions') }}">Контроль сессий</a></li>
+                        <li><a href="{{ url_for('logout') }}">Выйти</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+
+    <div style="padding: 10%;">
+        {% for subject, form in forms.items() %}
+        <div class="form-container">
+            <form method="POST">
+                {{ form.csrf_token }}
+                <p style="font-size: 24px; font-weight: bold;">{{ subject }}</p>
+
+
+                {% for deadline in stored_deadlines[subject]%}
+                <p style="display: inline-block; margin-top: 10px;"> {{deadline.name}} {{deadline.time}}
+                    <input class="del_button" type="submit" name="del{{deadline.id}}" id="del{{deadline.id}}"
+                        value="Удалить"></input>
+                </p>
+                <br>
+                {% endfor %}
+
+                {{form.deadline.name(class= "name_form")}}
+                <p style="display: inline-block; margin-top: 10px;">Дата дедлайна: {{form.deadline.time}}</p>
+                {{ form.add(class="add_button") }}
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+
+</html>

@@ -1,6 +1,5 @@
 import psycopg2
 import sqlparse
-import datetime
 import os
 
 postgres_ctx = {

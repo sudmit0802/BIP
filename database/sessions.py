@@ -6,13 +6,12 @@ def get_sessions_from_db(user_id):
     conn = get_connection(postgres_ctx)
     cur = conn.cursor()
     cur.execute(
-        f"SELECT tfv_address, tfv_time FROM tfv WHERE user_id={user_id};")
+        f"SELECT id, tfv_address, tfv_time FROM tfv WHERE user_id={user_id};")
     rows = cur.fetchall()
-    id = 1
+
     for row in rows:
         result.append(
-            dict(id=f'{id}', ip=row[0], time=row[1].strftime("%d %B %Y at %H:%M:%S")))
-        id += 1
+            dict(id=f'{row[0]}', ip=row[1], time=row[2].strftime("%d %B %Y at %H:%M:%S")))
     cur.close()
     conn.close()
 

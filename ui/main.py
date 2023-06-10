@@ -12,7 +12,6 @@ def update_main(req):
 
     if form.validate_on_submit():
         if form.data is not None:
-            print(req.form.keys())
             for plan in form.data:
                 if 'del' + plan['id'] in req.form.keys():
                     delete_plan(plan['id'])
@@ -23,6 +22,8 @@ def update_main(req):
                 if 'unmute' + plan['id'] in req.form.keys():
                     unmute_plan(plan['id'])
                     return redirect(url_for('main'))
+                if 'edit' + plan['id'] in req.form.keys():
+                    return redirect(url_for('subjects', plan_id=plan['id']))
         return redirect(url_for('new_plan'))
 
     return render_template('main.html', form=form)

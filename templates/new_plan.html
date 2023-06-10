@@ -2,8 +2,8 @@
 <html>
 
 <head>
-    <title>Manager - Главная</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css')}}" />
+    <title>Новый план</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='new_plan.css')}}" />
 </head>
 
 <body>
@@ -26,12 +26,16 @@
             </ul>
         </nav>
     </header>
+    <div class="form-container">
+        <form method="POST">
+            {{ form.csrf_token }}
+            {{ form.faculties(onchange="this.form.submit();")}}
+            {{ form.groups(onchange="this.form.submit();")}}
+            {{ form.plan_name(class="stringf") }}
+            <p style="color: rgba(255, 0, 0, 0.662);">{{ message }}</p>
+            {{ form.confirm }}
 
-    <div style="padding: 10%;">
-
-        <p style="margin: 30px; text-align: center; font-size:24px">Тут нужно связаться с ботом, выбрать группу,
-            предмет, добавить дедлайны и тд и тп...</p>
-
+        </form>
     </div>
 </body>
 
