@@ -11,9 +11,11 @@ from telebot.asyncio_storage import StateMemoryStorage
 bot = AsyncTeleBot(token='6236134779:AAF9IVmzQl2vAz9e5U8BCG8bqGECE_RzSUw', state_storage=StateMemoryStorage())
 
 # Generate authentication code
-def generate_code(length):
-    letters = string.ascii_uppercase
-    return ''.join(random.choice(letters) for i in range(length))
+async def generate_code():
+    code = ''
+    for i in range(6):
+        code += str(random.randrange(10))
+    return code
 
 
 # Just create different statesgroup
@@ -26,15 +28,15 @@ class MyStates(StatesGroup):
 # set_state -> sets a new state
 # delete_state -> delets state if exists
 # get_state -> returns state if exists
-
+LOG = True
 
 # Start command handler
 @bot.message_handler(commands=['start'])
-#сразу должна быть проверка, аутентифицировался ли чел уже через тг
-# проверка для пользователя с таким  
-# вынести функции обращения к бд в отдельный файл
 async def start_command_handler(message: types.Message):
-    
+    await check_authenticated(message)
+
+     
+async def check_authenticated(message):
     conn = await asyncpg.connect(user="postgres", password="0802",
                                     database="lab_manager_database", host="127.0.0.1")
     values = await conn.fetch(f"""select tg_chat_id from users WHERE tg_chat_id = '{message.chat.id}'""")
@@ -56,9 +58,7 @@ async def start_command_handler(message: types.Message):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         auth_button = types.KeyboardButton('🌊 Меню 🌊')
         markup.add(auth_button)
-        await bot.send_message(message.chat.id, "Привет, {}! Мы уже знакомы, переходи в меню:".format(message.from_user.username), reply_markup=markup)
-     
-
+        await bot.send_message(message.chat.id, "Привет, {}! Мы уже знакомы, переходи в меню:".format(message.from_user.username), reply_markup=markup)    
 
 # Authorization button handler
 @bot.message_handler(func=lambda message: message.text == '🦄 Пройти аутентификацию 🦄')
@@ -67,7 +67,7 @@ async def auth_button_handler(message: types.Message):
     #print(state)
     if state == 'MyStates:new_guest':
         #markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        markup = types.ReplyMarkupRemove()
+        markup = types.ReplyKeyboardRemove()
         #markup.add(types.KeyboardButton(text="Отправить код аутентификации"))
         await bot.set_state(message.from_user.id, MyStates.email, message.chat.id)
         await bot.send_message(message.chat.id, "Введите свой email для аутентификации.", reply_markup=markup)
@@ -82,15 +82,113 @@ async def auth_button_handler(message: types.Message):
     if state == 'MyStates:is_authenticated':
         markup = types.ReplyKeyboardMarkup()
         button_plans = types.KeyboardButton('мои планы')
-        button_create_plan = types.KeyboardButton('создать план')
+        close_deadlines = types.KeyboardButton('список ближайших дедлайнов')
         button_report = types.KeyboardButton('отчет')
         markup.row(button_plans)
-        markup.row(button_create_plan)
+        markup.row(close_deadlines)
         markup.row(button_report)
         await bot.send_message(message.chat.id, "Выбери кнопку:", reply_markup=markup)
 
     else:
-        print('not is_authenticated')        
+        print('not is_authenticated')
+        await check_authenticated(message) 
+
+
+
+@bot.message_handler(func=lambda message: message.text == 'мои планы')
+async def auth_button_handler(message: types.Message):
+    state = await bot.get_state(message.chat.id)
+    print(state)
+    if state == 'MyStates:is_authenticated':
+        await get_plans_from_db(message)
+    else:
+        print('not is_authenticated')
+        await check_authenticated(message) 
+
+
+async def get_plans_from_db(message):
+    conn = await asyncpg.connect(user="postgres", password="0802", database="lab_manager_database", host="127.0.0.1")
+    values = await conn.fetch(f"""select\
+    subjects.name, plans.name, users.username, deadlines.deadline_time, plans.status\
+    from users\
+    join plans\
+    on plans.user_id = users.id\
+    join subjects\
+    on subjects.plan_id = plans.id\
+    join deadlines\
+    on subjects.id = deadlines.subject_id\
+    where users.tg_chat_id = '{message.chat.id}'""")
+    print(values) # DELETE 
+    await conn.close()
+
+    if not values:
+        # values is an empty list
+        # добавляем кнопки
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        auth_button = types.KeyboardButton('🌊 Меню 🌊')
+        markup.add(auth_button)
+        await bot.send_message(message.chat.id, "Кажется у вас нет созданных планов", reply_markup=markup)
+    else:
+        await bot.set_state(message.from_user.id, MyStates.is_authenticated, message.chat.id)
+        # добавляем кнопки
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        auth_button = types.KeyboardButton('🌊 Меню 🌊')
+        markup.add(auth_button)
+        plans = ""
+        for i, recordww in enumerate(values):
+           #plans += f"{i+1}. Предмет: {recordww[0]}, дата: {recordww[3]} из плана {recordww[1]}\n"
+           print(values[i])
+
+        await bot.send_message(message.chat.id, plans, reply_markup=markup)
+
+
+@bot.message_handler(func=lambda message: message.text == 'список ближайших дедлайнов')
+async def auth_button_handler(message: types.Message):
+    state = await bot.get_state(message.chat.id)
+    print(state)
+    if state == 'MyStates:is_authenticated':
+        await get_soon_deadlines(message)
+    else:
+        print('not is_authenticated')
+        await check_authenticated(message) 
+
+
+async def get_soon_deadlines(message):
+    conn = await asyncpg.connect(user="postgres", password="0802", database="lab_manager_database", host="127.0.0.1")
+    values = await conn.fetch(f"""select\
+    subjects.name, plans.name, users.username, deadlines.deadline_time\
+    from users\
+    join plans\
+    on plans.user_id = users.id\
+    join subjects\
+    on subjects.plan_id = plans.id\
+    join deadlines\
+    on subjects.id = deadlines.subject_id\
+    where users.tg_chat_id = '{message.chat.id}' and plans.status = 'active' and deadline_status = True\
+    order by deadline_time\
+    limit 5""")
+    print(values) # DELETE 
+    await conn.close()
+
+    if not values:
+        # values is an empty list
+        # добавляем кнопки
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        auth_button = types.KeyboardButton('🌊 Меню 🌊')
+        markup.add(auth_button)
+        await bot.send_message(message.chat.id, "Ничего не нашли", reply_markup=markup)
+    else:
+        await bot.set_state(message.from_user.id, MyStates.is_authenticated, message.chat.id)
+        # добавляем кнопки
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        auth_button = types.KeyboardButton('🌊 Меню 🌊')
+        markup.add(auth_button)
+        deadlines = ""
+        for i, recordww in enumerate(values):
+           deadlines += f"{i+1}. Предмет: {recordww[0]}\nДата: {recordww[3]}\nПлан: {recordww[1]}\n"
+
+        await bot.send_message(message.chat.id, deadlines, reply_markup=markup)
+
 
 @bot.message_handler(state="*", commands='cancel')
 async def any_state(message):
@@ -113,7 +211,6 @@ async def name_get(message):
                                     database="lab_manager_database", host="127.0.0.1")
         values = await conn.fetch(f"""SELECT email FROM users WHERE email = '{data['email']}'""")
         await conn.close()
-        print(values) # DELETE 
 
         if not values:
             # values is an empty list
@@ -125,11 +222,10 @@ async def name_get(message):
             markup.add(auth_button)
             await bot.send_message(message.chat.id, f'Ой, кажется эта почта нам неизвестна. Используйте почту, указанную при регистрации на сайте. Либо зарегистрируйтесь, если вы не делали этого ранее.', reply_markup=markup)
         else:
-            print(message.text)  # DELETE 
-            mess = generate_code(6)
-            print(mess)  # DELETE 
-            data['auth_code_sent'] = mess
-            await send_email(mess, message.text)
+            auth_code = await generate_code()
+            data['auth_code_sent'] = auth_code
+            msg = 'One-Time Password for Sign In: ' + auth_code
+            await send_email(msg, message.text)
             await bot.send_message(message.chat.id, f'Спасибо, мы отправили вам код аутентификации на почту. Ведите его:')
             await bot.set_state(message.from_user.id, MyStates.auth_code_recv, message.chat.id)
 
@@ -187,7 +283,7 @@ async def run():
         values = await conn.fetch("""select * from users""")
         await bot.send_message(404247225, values)
         await conn.close()
-        await asyncio.sleep(360)
+        await asyncio.sleep(3600)
 
 
 async def main():
