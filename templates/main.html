@@ -28,9 +28,10 @@
   </header>
 
   <div style="padding: 5%;">
-    <sm style="margin: 30px; text-align: center; font-size:24px">Хочешь получать уведомления о предстоящих дедлайнах в
+    <sm style="margin: 60px; text-align: center; font-size:24px">Хочешь получать уведомления о предстоящих дедлайнах в
       telegram? Напиши нашему боту:</sm>
-    <button class="button" href="https://t.me/ddak_notification_bot?start=code">Ссылка на бота</button>
+    <a style="margin: 30px" href="https://t.me/ddak_notification_bot?start=code"><button class="button">Ссылка на
+        бота</button></a>
     <form method="POST">
       {{ form.csrf_token }}
       {% if not form.data %}
