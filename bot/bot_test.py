@@ -109,7 +109,7 @@ async def auth_button_handler(message: types.Message):
 async def get_plans_from_db(message):
     conn = await asyncpg.connect(user="postgres", password="0802", database="lab_manager_database", host="127.0.0.1")
     values = await conn.fetch(f"""select\
-    subjects.name, plans.name, users.username, deadlines.deadline_time, plans.status\
+    subjects.name, plans.name, users.username, deadlines.deadline_time, plans.status, deadlines.specifier, deadlines.deadline_status\
     from users\
     join plans\
     on plans.user_id = users.id\
@@ -117,8 +117,9 @@ async def get_plans_from_db(message):
     on subjects.plan_id = plans.id\
     join deadlines\
     on subjects.id = deadlines.subject_id\
-    where users.tg_chat_id = '{message.chat.id}'""")
-    print(values) # DELETE 
+    where users.tg_chat_id = '{message.chat.id}'\
+    order by plans.name, deadline_time""")
+    #print(values) # DELETE 
     await conn.close()
 
     if not values:
@@ -135,10 +136,17 @@ async def get_plans_from_db(message):
         auth_button = types.KeyboardButton('🌊 Меню 🌊')
         markup.add(auth_button)
         plans = ""
-        for i, recordww in enumerate(values):
-           #plans += f"{i+1}. Предмет: {recordww[0]}, дата: {recordww[3]} из плана {recordww[1]}\n"
-           print(values[i])
-
+        print(values)
+        deadline_status = ""
+        for i, record in enumerate(values):
+            if record[6] == True:
+                deadline_status = "active"
+            else:
+                deadline_status = "inactive"
+            if i == 0 or values[i][1]!=values[i-1][1]:
+                plans += f"{i+1}.📌 План: {record[1]}, статус: {record[4]} \n"
+            plans += f"🎯Дедлайн: {record[5]}, статус: {deadline_status}\n🎓Предмет: {record[0]}\n⏳Дата: {record[3]}\n"
+            plans += "--------------------------------------------\n"
         await bot.send_message(message.chat.id, plans, reply_markup=markup)
 
 
@@ -185,7 +193,7 @@ async def get_soon_deadlines(message):
         markup.add(auth_button)
         deadlines = ""
         for i, recordww in enumerate(values):
-           deadlines += f"{i+1}. Предмет: {recordww[0]}\nДата: {recordww[3]}\nПлан: {recordww[1]}\n"
+           deadlines += f"{i+1}. --------------------------------------------\n🎓Предмет: {recordww[0]}\n⏳Дата: {recordww[3]}\n📌План: {recordww[1]}\n"
 
         await bot.send_message(message.chat.id, deadlines, reply_markup=markup)
 
