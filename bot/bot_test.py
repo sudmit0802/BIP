@@ -34,7 +34,7 @@ async def send_email(message, reciever):
     try:
         server.sendmail(sender, reciever, message)
     except Exception as e:
-        print(e)
+        #print(e)
         await bot.send_message(reciever, "Error: Failed to send email.")
     server.quit()
 
@@ -59,8 +59,8 @@ async def start_command_handler(message: types.Message):
 async def check_authenticated(message):
     conn = await connect_db()
     values = await conn.fetch(f"""select tg_chat_id from users WHERE tg_chat_id = '{message.chat.id}'""")
-    print(f"""select tg_chat_id from users WHERE tg_chat_id = '{message.chat.id}'""")
-    print(values) # DELETE
+    #print(f"""select tg_chat_id from users WHERE tg_chat_id = '{message.chat.id}'""")
+    #print(values) # DELETE
     await conn.close()
 
     if not values:
@@ -83,7 +83,7 @@ async def check_authenticated(message):
 @bot.message_handler(func=lambda message: message.text == '🦄 Пройти аутентификацию 🦄')
 async def auth_button_handler(message: types.Message):
     state = await bot.get_state(message.chat.id)
-    #print(state)
+    ##print(state)
     if state == 'MyStates:new_guest':
         #markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         markup = types.ReplyKeyboardRemove()
@@ -97,7 +97,7 @@ async def auth_button_handler(message: types.Message):
 @bot.message_handler(func=lambda message: message.text == '🌊 Меню 🌊')
 async def auth_button_handler(message: types.Message):
     state = await bot.get_state(message.chat.id)
-    print(state)
+    #print(state)
     if state == 'MyStates:is_authenticated':
         markup = types.ReplyKeyboardMarkup()
         button_plans = types.KeyboardButton('мои планы')
@@ -109,7 +109,7 @@ async def auth_button_handler(message: types.Message):
         await bot.send_message(message.chat.id, "Выбери кнопку:", reply_markup=markup)
 
     else:
-        print('not is_authenticated')
+        #print('not is_authenticated')
         await check_authenticated(message) 
 
 
@@ -117,11 +117,11 @@ async def auth_button_handler(message: types.Message):
 @bot.message_handler(func=lambda message: message.text == 'мои планы')
 async def auth_button_handler(message: types.Message):
     state = await bot.get_state(message.chat.id)
-    print(state)
+    #print(state)
     if state == 'MyStates:is_authenticated':
         await get_plans_from_db(message)
     else:
-        print('not is_authenticated')
+        #print('not is_authenticated')
         await check_authenticated(message) 
 
 
@@ -138,7 +138,7 @@ async def get_plans_from_db(message):
     on subjects.id = deadlines.subject_id\
     where users.tg_chat_id = '{message.chat.id}'\
     order by plans.name, deadline_time""")
-    #print(values) # DELETE 
+    ##print(values) # DELETE 
     await conn.close()
 
     if not values:
@@ -155,7 +155,7 @@ async def get_plans_from_db(message):
         auth_button = types.KeyboardButton('🌊 Меню 🌊')
         markup.add(auth_button)
         plans = ""
-        print(values)
+        #print(values)
         deadline_status = ""
         for i, record in enumerate(values):
             if record[6] == True:
@@ -172,11 +172,11 @@ async def get_plans_from_db(message):
 @bot.message_handler(func=lambda message: message.text == 'список ближайших дедлайнов')
 async def auth_button_handler(message: types.Message):
     state = await bot.get_state(message.chat.id)
-    print(state)
+    #print(state)
     if state == 'MyStates:is_authenticated':
         await get_soon_deadlines(message)
     else:
-        print('not is_authenticated')
+        #print('not is_authenticated')
         await check_authenticated(message) 
 
 
@@ -194,7 +194,7 @@ async def get_soon_deadlines(message):
     where users.tg_chat_id = '{message.chat.id}' and plans.status = 'active' and deadline_status = True\
     order by deadline_time\
     limit 5""")
-    print(values) # DELETE 
+    #print(values) # DELETE 
     await conn.close()
 
     if not values:
@@ -267,7 +267,7 @@ async def name_get(message):
             conn = await connect_db()
             values = await conn.fetch(f"""UPDATE users SET tg_chat_id = '{message.chat.id}' WHERE email = '{data['email']}'""")
             await conn.close() 
-            print(values) # DELETE
+            #print(values) # DELETE
 
             if values == 'UPDATE 0':
             #пользователь с такой почтой не регистрировался на сайте(
@@ -290,7 +290,7 @@ async def name_get(message):
 async def check_deadlines_every_evening():
     conn = await connect_db()
     values = await conn.fetch(f"""select\
-    subjects.name, plans.name, users.username, deadlines.deadline_time\
+    subjects.name, plans.name, users.username, deadlines.deadline_time, plans.status, deadlines.specifier, deadlines.deadline_status, EXTRACT(epoch FROM (deadlines.deadline_time - CURRENT_TIMESTAMP)) / 3600 as hours_left, users.tg_chat_id\
     from users\
     join plans\
     on plans.user_id = users.id\
@@ -298,33 +298,53 @@ async def check_deadlines_every_evening():
     on subjects.plan_id = plans.id\
     join deadlines\
     on subjects.id = deadlines.subject_id\
-    where users.tg_chat_id = '{message.chat.id}' and plans.status = 'active' and deadline_status = True\
-    order by deadline_time\
-    limit 5""")
-    print(values) # DELETE 
+    where plans.status = 'active' and deadline_status = True\
+    order by users.username, plans.name, hours_left""")
+    #print(values) # DELETE 
+    #print(values[0])
     await conn.close()
-    print('Отправлено сообщение!')
+
+    text_for_user = ""
+    for i, record in enumerate(values):
+
+        if record[7] > 0 and record[7] < 24: # дедлайн завтра
+            text_for_user += f"🎯Срочный дедлайн (меньше суток): \n"
+            text_for_user += f"🎓Предмет: {record[0]}\nДата: {record[3]} \n"
+            text_for_user += f"📌Название дедлайна: {record[5]}\n"
+            #print(text_for_user)
+
+        if record[7] > 24 and record[7] < 48: # дедлайн послезавтра
+            #text_for_user += f"Привет {record[2]}!\n"
+            text_for_user += f"⏳Скоро дедлайн (Послезавтра): \n"
+            text_for_user += f"🎓Предмет: {record[0]}, Дата: {record[3]} \n"
+            text_for_user += f"📌Название дедлайна: {record[5]}\n"
+            #print(text_for_user)
+
+        if text_for_user != "":
+            if i == len(values)-1:
+                #далее список закончился или новый пользователь уже
+                hello_text = f"Привет {record[2]}!\n"
+                text_for_user = hello_text + text_for_user
+                #print(text_for_user)
+                await bot.send_message(record[8], text_for_user)
+                #print('Отправлено сообщение!')
+            elif values[i+1][2]!=values[i][2]:
+                #далее список закончился или новый пользователь уже
+                hello_text = f"Привет {record[2]}!\n"
+                text_for_user = hello_text + text_for_user
+                #print(text_for_user)
+                await bot.send_message(record[8], text_for_user)
+                #print('Отправлено сообщение!')
 
 # Функция, выполняющая проверку времени и вызывающая функцию отправки сообщения
 async def check_time_and_send():
     while True:
         current_time = datetime.datetime.now().time()
         
-        if current_time >= datetime.time(11, 0) and current_time <= datetime.time(12, 0):
+        if current_time >= datetime.time(0, 0) and current_time <= datetime.time(1, 0):
         #if current_time >= datetime.time(19, 0) and current_time <= datetime.time(20, 0):
             await check_deadlines_every_evening()
-        await asyncio.sleep(6 * 60)  # Проверяем время каждые n * 60 
-
-
-
-async def run():
-    while True:
-        conn = await connect_db()
-        values = await conn.fetch("""select * from users""")
-        await bot.send_message(404247225, values)
-        await conn.close()
-        await asyncio.sleep(3600)
-
+        await asyncio.sleep(2 * 60)  # Проверяем время каждые n * 60 
 
 async def main():
     bot.add_custom_filter(asyncio_filters.StateFilter(bot))
