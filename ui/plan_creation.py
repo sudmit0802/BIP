@@ -53,7 +53,7 @@ def set_deadlines(req):
     stored_deadlines = dict()
 
     if req.referrer is not None and req.args.get('plan_id') is not None:
-        if str(req.referrer).startswith('http://localhost:5000/new_plan') or str(req.referrer).startswith('http://localhost:5000/main'):
+        if str(req.referrer).startswith('https://spbstu-ruz-manager.ru/new_plan') or str(req.referrer).startswith('https://spbstu-ruz-manager.ru/main'):
 
             subjects = get_subjects_for_plan(req.args.get('plan_id'))
             if subjects is None:

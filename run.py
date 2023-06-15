@@ -7,6 +7,7 @@ from ui import update_sessions, update_main, create_plan, set_deadlines
 from flasgger import Swagger
 import asyncio
 import sys
+from flask import send_from_directory
 
 app = Flask(__name__)
 swagger = Swagger(app)
@@ -77,7 +78,7 @@ def verify():
     """
     username = request.args.get('username')
     if username and request.referrer:
-        if request.referrer.startswith('http://localhost:5000'):
+        if request.referrer.startswith('https://spbstu-ruz-manager.ru'):
             return verify_user(username, request.remote_addr)
     return redirect(url_for('signin'))
 
@@ -189,6 +190,11 @@ def instruction():
     return render_template('instruction.html')
 
 
+@app.route('/.well-known/acme-challenge/<path:filename>')
+def serve_challenge_file(filename):
+    return send_from_directory('.well-known/acme-challenge', filename)
+
+
 @app.route("/new_plan", methods=["GET", "POST"])
 @login_required
 @second_factor_required
@@ -209,4 +215,7 @@ if __name__ == "__main__":
     app.secret_key = str(secrets.token_hex(32))
     login_manager.init_app(app)
     create_database()
-    app.run(debug=True)
+
+context = ('/etc/letsencrypt/live/spbstu-ruz-manager.ru/fullchain.pem',
+           '/etc/letsencrypt/live/spbstu-ruz-manager.ru/privkey.pem')
+app.run(port=443, host='10.128.0.11', debug=True, ssl_context=context)
