@@ -18,10 +18,11 @@ async def generate_code():
         code += str(random.randrange(10))
     return code
 
+time_to_update = 12*60
 
 async def connect_db():
     return await asyncpg.connect(user="postgres", password="0802",
-                                    database="lab_manager_database", host="127.0.0.1")
+                                    database="lab_manager_database", host="localhost")
 
 
 async def send_email(message, reciever):
@@ -44,6 +45,7 @@ class MyStates(StatesGroup):
     new_guest = State() # statesgroup should contain states
     email = State() # statesgroup should contain states
     auth_code_recv = State()
+    timer_manager_admin = State()
 
 # set_state -> sets a new state
 # delete_state -> delets state if exists
@@ -55,7 +57,20 @@ LOG = True
 async def start_command_handler(message: types.Message):
     await check_authenticated(message)
 
-     
+# set time command
+@bot.message_handler(commands=['set_time'])
+async def start_command_handler(message: types.Message):
+    await bot.set_state(message.from_user.id, MyStates.timer_manager_admin, message.chat.id)
+
+
+@bot.message_handler(state=MyStates.timer_manager_admin)
+async def name_get(message):
+    async with bot.retrieve_data(message.from_user.id, message.chat.id) as data:
+        time_to_update = message.text
+        print(f"new time_to_update: {time_to_update}")
+        await bot.set_state(message.from_user.id, MyStates.is_authenticated, message.chat.id)
+
+
 async def check_authenticated(message):
     conn = await connect_db()
     values = await conn.fetch(f"""select tg_chat_id from users WHERE tg_chat_id = '{message.chat.id}'""")
@@ -341,10 +356,10 @@ async def check_time_and_send():
     while True:
         current_time = datetime.datetime.now().time()
         
-        if current_time >= datetime.time(0, 0) and current_time <= datetime.time(1, 0):
-        #if current_time >= datetime.time(19, 0) and current_time <= datetime.time(20, 0):
+        #if current_time >= datetime.time(0, 0) and current_time <= datetime.time(1, 0):
+        if current_time >= datetime.time(0, 0) and current_time <= datetime.time(16, 0):
             await check_deadlines_every_evening()
-        await asyncio.sleep(2 * 60)  # Проверяем время каждые n * 60 
+        await asyncio.sleep(time_to_update * 60)  # Проверяем время каждые n * 60 
 
 async def main():
     bot.add_custom_filter(asyncio_filters.StateFilter(bot))
