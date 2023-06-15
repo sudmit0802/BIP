@@ -18,7 +18,7 @@ async def generate_code():
         code += str(random.randrange(10))
     return code
 
-time_to_update = 12*60
+time_to_update = 1
 
 async def connect_db():
     return await asyncpg.connect(user="postgres", password="0802",
@@ -356,8 +356,7 @@ async def check_time_and_send():
     while True:
         current_time = datetime.datetime.now().time()
         
-        #if current_time >= datetime.time(0, 0) and current_time <= datetime.time(1, 0):
-        if current_time >= datetime.time(0, 0) and current_time <= datetime.time(16, 0):
+        if current_time >= datetime.time(0, 0) and current_time <= datetime.time(23, 59):
             await check_deadlines_every_evening()
         await asyncio.sleep(time_to_update * 60)  # Проверяем время каждые n * 60 
 
