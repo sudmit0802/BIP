@@ -199,6 +199,15 @@ def serve_challenge_file(filename):
 @login_required
 @second_factor_required
 def new_plan():
+    """
+    New plan endpoint.
+    ---
+    responses:
+      302:
+        description: redirection (problems occured)
+      200:
+        description: plan successfully created.
+    """
     return create_plan(request)
 
 
@@ -206,6 +215,15 @@ def new_plan():
 @login_required
 @second_factor_required
 def subjects():
+    """
+    Subjects endpoint.
+    ---
+    responses:
+      302:
+        description: redirection (problems occured)
+      200:
+        description: subjects successfully saved.
+    """
     return set_deadlines(request)
 
 
